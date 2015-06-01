@@ -24,15 +24,14 @@ import android.view.Gravity;
 import android.widget.FrameLayout;
 
 /**
- * This viewgroup is wrapping your FAB, so it will insert a new child on top to draw the progress
- * circle around it.
+ * This ViewGroup wraps your FAB, so it will insert a new child on top to draw the progress
+ * arc around it.
  *
  * @author Jorge Castillo Pérez
  */
 public class FABProgressCircle extends FrameLayout {
 
-  private int backColor;
-  private int frontColor;
+  private int arcColor;
   private int arcWidth;
   private boolean viewsAdded;
   private ProgressArcView progressArc;
@@ -65,12 +64,9 @@ public class FABProgressCircle extends FrameLayout {
 
   private void setupInitialAttributes(AttributeSet attrs) {
     if (attrs != null) {
-      TypedArray attrArray =
-          getContext().obtainStyledAttributes(attrs, R.styleable.FABProgressCircle, 0, 0);
+      TypedArray attrArray = getAttributes(attrs);
       try {
-        backColor = attrArray.getColor(R.styleable.FABProgressCircle_backColor,
-            getResources().getColor(R.color.fab_orange_bright));
-        frontColor = attrArray.getColor(R.styleable.FABProgressCircle_frontColor,
+        arcColor = attrArray.getColor(R.styleable.FABProgressCircle_arcColor,
             getResources().getColor(R.color.fab_orange_dark));
         arcWidth = attrArray.getDimensionPixelSize(R.styleable.FABProgressCircle_arcWidth,
             getResources().getDimensionPixelSize(R.dimen.progress_arc_stroke_width));
@@ -78,6 +74,10 @@ public class FABProgressCircle extends FrameLayout {
         attrArray.recycle();
       }
     }
+  }
+
+  private TypedArray getAttributes(AttributeSet attrs) {
+    return getContext().obtainStyledAttributes(attrs, R.styleable.FABProgressCircle, 0, 0);
   }
 
   @Override protected void onFinishInflate() {
@@ -104,7 +104,7 @@ public class FABProgressCircle extends FrameLayout {
    * (if it exists). The progress circle will have his own shadow effect.
    */
   private void addArcViewAtFront() {
-    progressArc = new ProgressArcView(getContext(), frontColor, arcWidth);
+    progressArc = new ProgressArcView(getContext(), arcColor, arcWidth);
     addView(progressArc,
         new FrameLayout.LayoutParams(getMeasuredWidth() + arcWidth, getMeasuredHeight() + arcWidth,
             Gravity.CENTER));
@@ -126,7 +126,7 @@ public class FABProgressCircle extends FrameLayout {
   }
 
   public void show() {
-    progressArc.fadeIn();
+    progressArc.show();
   }
 
   public void beginStopAnimation() {

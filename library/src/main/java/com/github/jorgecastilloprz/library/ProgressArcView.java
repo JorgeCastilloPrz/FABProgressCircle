@@ -15,9 +15,6 @@
  */
 package com.github.jorgecastilloprz.library;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ProgressBar;
@@ -30,22 +27,19 @@ import android.widget.ProgressBar;
  */
 final class ProgressArcView extends ProgressBar {
 
-  private final int SHOW_SCALE_ANIM_DURATION = 40;
-  private final int SHOW_SCALE_ANIM_DELAY = 150;
-
-  private int frontColor;
+  private int arcColor;
   private int arcWidth;
 
-  ProgressArcView(Context context, int frontColor, int arcWidth) {
+  ProgressArcView(Context context, int arcColor, int arcWidth) {
     super(context);
-    this.frontColor = frontColor;
+    this.arcColor = arcColor;
     this.arcWidth = arcWidth;
     init();
   }
 
   private void init() {
     setupInitialAlpha();
-    ProgressArcDrawable arcDrawable = new ProgressArcDrawable(getResources(), arcWidth, frontColor);
+    ProgressArcDrawable arcDrawable = new ProgressArcDrawable(getResources(), arcWidth, arcColor);
     setIndeterminateDrawable(arcDrawable);
   }
 
@@ -53,25 +47,13 @@ final class ProgressArcView extends ProgressBar {
     setAlpha(0);
   }
 
-  void fadeIn() {
-    ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(this, "alpha", 1);
-    fadeInAnim.setDuration(SHOW_SCALE_ANIM_DURATION);
-    fadeInAnim.setStartDelay(SHOW_SCALE_ANIM_DELAY);
-    fadeInAnim.addListener(new Animator.AnimatorListener() {
-      @Override public void onAnimationStart(Animator animator) {
+  void show() {
+    postDelayed(new Runnable() {
+      @Override public void run() {
+        setAlpha(1);
         getDrawable().reset();
       }
-
-      @Override public void onAnimationEnd(Animator animator) {
-      }
-
-      @Override public void onAnimationCancel(Animator animator) {
-      }
-
-      @Override public void onAnimationRepeat(Animator animator) {
-      }
-    });
-    fadeInAnim.start();
+    }, Utils.SHOW_SCALE_ANIM_DELAY);
   }
 
   void progressiveStop() {

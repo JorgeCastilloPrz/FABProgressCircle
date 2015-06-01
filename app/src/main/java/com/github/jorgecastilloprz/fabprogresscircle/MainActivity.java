@@ -37,6 +37,8 @@ public class MainActivity extends Activity implements MockActionCallback, FABPro
   }
 
   private void attachListeners() {
+    fabProgressCircle.attachListener(this);
+
     findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         fabProgressCircle.show();

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <declare-styleable name="FABProgressCircle">
-    <attr name="backColor"
-        format="color"/>
-    <attr name="frontColor"
+    <attr name="arcColor"
         format="color"/>
     <attr name="arcWidth"
         format="dimension"/>

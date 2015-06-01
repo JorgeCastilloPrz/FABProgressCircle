@@ -20,7 +20,14 @@ import android.animation.ValueAnimator;
 /**
  * @author Jorge Castillo Pérez
  */
-class ProgressArcUtils {
+class Utils {
+
+  static final int SHOW_SCALE_ANIM_DURATION = 40;
+  static final int SHOW_SCALE_ANIM_DELAY = 150;
+
+  static final int ROTATION_ANIMATOR_DURATION = 2000;
+  static final int SWEEP_ANIMATOR_DURATION = 600;
+  static final int END_ANIMATOR_DURATION = 200;
 
   static float getAnimatedFraction(ValueAnimator animator) {
     float fraction = ((float) animator.getCurrentPlayTime()) / animator.getDuration();
