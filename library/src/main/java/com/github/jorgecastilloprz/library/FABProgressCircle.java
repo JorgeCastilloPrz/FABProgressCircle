@@ -15,18 +15,12 @@
  */
 package com.github.jorgecastilloprz.library;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.FrameLayout;
 
 /**
@@ -34,14 +28,12 @@ import android.widget.FrameLayout;
  */
 public class FABProgressCircle extends FrameLayout {
 
-  private final int SHOW_SCALE_ANIM_DURATION = 150;
-
   private int backColor;
   private int frontColor;
   private int arcWidth;
   private boolean viewsAdded;
 
-  private ProgressArc progressArc;
+  private ProgressArcView progressArc;
 
   public FABProgressCircle(Context context) {
     super(context);
@@ -93,7 +85,6 @@ public class FABProgressCircle extends FrameLayout {
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     if (!viewsAdded) {
-      addBackCircleBehindEverything();
       addArcViewAtFront();
       setFabGravity();
       viewsAdded = true;
@@ -101,20 +92,8 @@ public class FABProgressCircle extends FrameLayout {
   }
 
   private void setFabGravity() {
-    FrameLayout.LayoutParams fabParams = (FrameLayout.LayoutParams) getChildAt(1).getLayoutParams();
+    FrameLayout.LayoutParams fabParams = (FrameLayout.LayoutParams) getChildAt(0).getLayoutParams();
     fabParams.gravity = Gravity.CENTER;
-  }
-
-  private void addBackCircleBehindEverything() {
-    Drawable drawable = getContext().getResources().getDrawable(R.drawable.oval);
-    drawable.setColorFilter(backColor, PorterDuff.Mode.SRC_ATOP);
-
-    View ovalView = new View(getContext());
-    ovalView.setLayoutParams(
-        new FrameLayout.LayoutParams(getMeasuredWidth() - 2, getMeasuredHeight() - 2,
-            Gravity.CENTER));
-    ovalView.setBackgroundDrawable(drawable);
-    addView(ovalView, 0);
   }
 
   /**
@@ -122,7 +101,7 @@ public class FABProgressCircle extends FrameLayout {
    * (if it exists). The progress circle will have his own shadow effect.
    */
   private void addArcViewAtFront() {
-    progressArc = new ProgressArc(getContext(), frontColor, arcWidth);
+    progressArc = new ProgressArcView(getContext(), frontColor, arcWidth);
     addView(progressArc,
         new FrameLayout.LayoutParams(getMeasuredWidth() + arcWidth, getMeasuredHeight() + arcWidth,
             Gravity.CENTER));
@@ -140,18 +119,6 @@ public class FABProgressCircle extends FrameLayout {
   }
 
   public void show() {
-    float scaleFactor = (float) (getWidth() + arcWidth) / getWidth();
-    ValueAnimator scaleXAnim = ObjectAnimator.ofFloat(getChildAt(0), "scaleX", scaleFactor);
-    ValueAnimator scaleYAnim = ObjectAnimator.ofFloat(getChildAt(0), "scaleY", scaleFactor);
-
-    AnimatorSet set = new AnimatorSet();
-    set.playTogether(scaleXAnim, scaleYAnim);
-    set.setDuration(SHOW_SCALE_ANIM_DURATION);
-    set.start();
-
-    ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(progressArc, "alpha", 1);
-    fadeInAnim.setDuration(SHOW_SCALE_ANIM_DURATION);
-    fadeInAnim.setStartDelay(SHOW_SCALE_ANIM_DURATION);
-    fadeInAnim.start();
+    progressArc.fadeIn();
   }
 }
