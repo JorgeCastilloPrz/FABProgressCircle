@@ -1,0 +1,4 @@
+<resources>
+  <string name="app_name">library</string>
+  <string name="child_count_error">FABProgressCircle layout must only contain one child.</string>
+</resources>

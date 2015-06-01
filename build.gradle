@@ -1,0 +1,34 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:1.2.3'
+  }
+}
+
+allprojects {
+  ext {
+    // Android config
+    androidCompileSdkVersion = 22
+    androidBuildToolsVersion = "22.0.0"
+    androidMinSdkVersion = 11
+    androidTargetSdkVersion = 22
+    androidApplicationId = 'com.github.jorgecastilloprz.fabprogresscircle'
+    androidVersionCode = 1
+    androidVersionName = '1.0'
+
+    // Libraries
+    libAppCompat = 'com.android.support:appcompat-v7:22.0.0'
+    libSupportDesign = 'com.android.support:design:22.2.0'
+    libPicasso = 'com.squareup.picasso:picasso:2.5.2'
+
+    //Testing libraries
+    libRoboelectric = 'org.robolectric:robolectric:2.4'
+    libMockito = 'org.mockito:mockito-all:1.9.5'
+  }
+
+  repositories {
+    jcenter()
+  }
+}

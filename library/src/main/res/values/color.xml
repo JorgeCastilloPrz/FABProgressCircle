@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="fab_orange_dark">#f97910</color>
+  <color name="fab_orange_light">#ffb54c</color>
+  <color name="fab_orange_bright">#FFC674</color>
+</resources>

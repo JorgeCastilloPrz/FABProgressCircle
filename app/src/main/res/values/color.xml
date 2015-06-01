@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="primary">#5e546b</color>
+  <color name="primary_dark">#5e546b</color>
+  <color name="toolbar_text_color">#FFFFFF</color>
+  <color name="fab_primary">#5869b2</color>
+  <color name="fab_primary_pressed">#3951b7</color>
+  <color name="fab_ripple">#7891ff</color>
+  <color name="fab_orange_dark">#f97910</color>
+  <color name="fab_orange_bright">#ffb54c</color>
+  <color name="disabled_gray">#CCC</color>
+  <color name="gray_backgrounds">#f0ecf0</color>
+  <color name="header_gray_background">#EEEEEE</color>
+  <color name="subheader_gray_button">#F5F5F5</color>
+  <color name="green">#009688</color>
+</resources>

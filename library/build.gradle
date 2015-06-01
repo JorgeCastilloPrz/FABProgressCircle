@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+apply plugin: 'checkstyle'
+
+android {
+  compileSdkVersion parent.ext.androidCompileSdkVersion
+  buildToolsVersion parent.ext.androidBuildToolsVersion
+
+  defaultConfig {
+    minSdkVersion parent.ext.androidMinSdkVersion
+    targetSdkVersion parent.ext.androidTargetSdkVersion
+    versionCode parent.ext.androidVersionCode
+    versionName parent.ext.androidVersionName
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  testCompile parent.ext.libRoboelectric
+  testCompile parent.ext.libMockito
+}
+
+task checkstyle(type: Checkstyle) {
+  configFile file('../config/checkstyle/checkstyle.xml')
+  source 'src'
+  include '**/*.java'
+  exclude '**/gen/**'
+
+  classpath = files()
+}
+
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
