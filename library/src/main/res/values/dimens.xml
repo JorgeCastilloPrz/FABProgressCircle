@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="progress_arc_stroke_width">7dp</dimen>
+  <dimen name="progress_arc_stroke_width">5dp</dimen>
   <integer name="cpb_default_min_sweep_angle">20</integer>
   <integer name="cpb_default_max_sweep_angle">300</integer>
   <item name="cpb_default_sweep_speed" format="float" type="string">1</item>

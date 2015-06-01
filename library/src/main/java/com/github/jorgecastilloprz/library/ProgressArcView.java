@@ -15,22 +15,27 @@
  */
 package com.github.jorgecastilloprz.library;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.widget.ProgressBar;
 
 /**
+ * This view contains the animated arc and depends totally on {@link ProgressArcDrawable} to get
+ * its corresponding graphic aspect.
+ *
  * @author Jorge Castillo Pérez
  */
 final class ProgressArcView extends ProgressBar {
 
-  private final int SHOW_SCALE_ANIM_DURATION = 150;
+  private final int SHOW_SCALE_ANIM_DURATION = 40;
+  private final int SHOW_SCALE_ANIM_DELAY = 150;
 
   private int frontColor;
   private int arcWidth;
+  private Drawable progressDrawable;
 
   ProgressArcView(Context context, int frontColor, int arcWidth) {
     super(context);
@@ -42,24 +47,10 @@ final class ProgressArcView extends ProgressBar {
   private void init() {
     setupInitialAlpha();
 
-    if (isInEditMode()) {
-      setIndeterminateDrawable(new ProgressArcDrawable.Builder(getContext(), true).build());
-      return;
-    }
-
-    Resources res = getResources();
-
-    Drawable indeterminateDrawable;
     ProgressArcDrawable.Builder builder =
-        new ProgressArcDrawable.Builder(getContext()).color(frontColor)
-            .sweepSpeed(Float.parseFloat(res.getString(R.string.cpb_default_sweep_speed)))
-            .rotationSpeed(Float.parseFloat(res.getString(R.string.cpb_default_rotation_speed)))
-            .strokeWidth(arcWidth)
-            .minSweepAngle(res.getInteger(R.integer.cpb_default_min_sweep_angle))
-            .maxSweepAngle(res.getInteger(R.integer.cpb_default_max_sweep_angle));
-
-    indeterminateDrawable = builder.build();
-    setIndeterminateDrawable(indeterminateDrawable);
+        new ProgressArcDrawable.Builder(getContext()).color(frontColor).strokeWidth(arcWidth);
+    progressDrawable = builder.build();
+    setIndeterminateDrawable(progressDrawable);
   }
 
   private void setupInitialAlpha() {
@@ -69,23 +60,34 @@ final class ProgressArcView extends ProgressBar {
   void fadeIn() {
     ValueAnimator fadeInAnim = ObjectAnimator.ofFloat(this, "alpha", 1);
     fadeInAnim.setDuration(SHOW_SCALE_ANIM_DURATION);
-    fadeInAnim.setStartDelay(SHOW_SCALE_ANIM_DURATION);
+    fadeInAnim.setStartDelay(SHOW_SCALE_ANIM_DELAY);
+    fadeInAnim.addListener(new Animator.AnimatorListener() {
+      @Override public void onAnimationStart(Animator animator) {
+        getDrawable().reset();
+      }
+
+      @Override public void onAnimationEnd(Animator animator) {
+      }
+
+      @Override public void onAnimationCancel(Animator animator) {
+      }
+
+      @Override public void onAnimationRepeat(Animator animator) {
+      }
+    });
     fadeInAnim.start();
   }
 
-  private ProgressArcDrawable checkIndeterminateDrawable() {
-    Drawable ret = getIndeterminateDrawable();
-    if (ret == null || !(ret instanceof ProgressArcDrawable)) {
-      throw new RuntimeException("The drawable is not a CircularProgressDrawable");
-    }
-    return (ProgressArcDrawable) ret;
-  }
-
   void progressiveStop() {
-    checkIndeterminateDrawable().progressiveStop();
+    getDrawable().progressiveStop();
   }
 
   void progressiveStop(FABProgressListener listener) {
-    checkIndeterminateDrawable().progressiveStop(listener);
+    getDrawable().progressiveStop(listener);
+  }
+
+  private ProgressArcDrawable getDrawable() {
+    Drawable ret = getIndeterminateDrawable();
+    return (ProgressArcDrawable) ret;
   }
 }

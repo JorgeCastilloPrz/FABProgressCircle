@@ -18,6 +18,7 @@ package com.github.jorgecastilloprz.library;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
@@ -41,8 +42,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   public enum Style {NORMAL, ROUNDED}
 
   static final Interpolator END_INTERPOLATOR = new LinearInterpolator();
-  private static final Interpolator DEFAULT_ROTATION_INTERPOLATOR = new LinearInterpolator();
-  private static final Interpolator DEFAULT_SWEEP_INTERPOLATOR = new DecelerateInterpolator();
   private static final int ROTATION_ANIMATOR_DURATION = 2000;
   private static final int SWEEP_ANIMATOR_DURATION = 600;
   private static final int END_ANIMATOR_DURATION = 200;
@@ -94,9 +93,18 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     setupAnimations();
   }
 
-  private void reinitValues() {
+  public void reset() {
+    stop();
+    resetProperties();
+    start();
+  }
+
+  private void resetProperties() {
     mFirstSweepAnimation = true;
     mCurrentEndRatio = 1f;
+    mCurrentSweepAngle = 0;
+    mCurrentRotationAngle = 0;
+    mCurrentRotationAngleOffset = 0;
     mPaint.setColor(mCurrentColor);
   }
 
@@ -144,9 +152,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     mModeAppearing = false;
     mCurrentRotationAngleOffset = mCurrentRotationAngleOffset + (360 - mMaxSweepAngle);
   }
-
-  //////////////////////////////////////////////////////////////////////////////
-  ////////////////            Animation
 
   private void setupAnimations() {
     mRotationAnimator = ValueAnimator.ofFloat(0f, 360f);
@@ -267,7 +272,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       return;
     }
     mRunning = true;
-    reinitValues();
+    resetProperties();
     mRotationAnimator.start();
     mSweepAppearingAnimator.start();
     invalidateSelf();
@@ -347,54 +352,23 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     private int mMinSweepAngle;
     private int mMaxSweepAngle;
     private int frontColor;
-    private Style mStyle;
-    private Interpolator mSweepInterpolator = DEFAULT_SWEEP_INTERPOLATOR;
-    private Interpolator mAngleInterpolator = DEFAULT_ROTATION_INTERPOLATOR;
+    private Resources res;
 
     public Builder(Context context) {
-      this(context, false);
+      this.res = context.getResources();
+      initValues();
     }
 
-    public Builder(Context context, boolean editMode) {
-      initValues(context, editMode);
-    }
-
-    private void initValues(Context context, boolean editMode) {
-      mStrokeWidth = context.getResources().getDimension(R.dimen.progress_arc_stroke_width);
-      mSweepSpeed = 1f;
-      mRotationSpeed = 1f;
-      if (editMode) {
-        mMinSweepAngle = 20;
-        mMaxSweepAngle = 300;
-      } else {
-        mMinSweepAngle = context.getResources().getInteger(R.integer.cpb_default_min_sweep_angle);
-        mMaxSweepAngle = context.getResources().getInteger(R.integer.cpb_default_max_sweep_angle);
-      }
-      mStyle = Style.ROUNDED;
+    private void initValues() {
+      mStrokeWidth = res.getDimension(R.dimen.progress_arc_stroke_width);
+      mSweepSpeed = Float.parseFloat(res.getString(R.string.cpb_default_sweep_speed));
+      mRotationSpeed = Float.parseFloat(res.getString(R.string.cpb_default_rotation_speed));
+      mMinSweepAngle = res.getInteger(R.integer.cpb_default_min_sweep_angle);
+      mMaxSweepAngle = res.getInteger(R.integer.cpb_default_max_sweep_angle);
     }
 
     public Builder color(int frontColor) {
       this.frontColor = frontColor;
-      return this;
-    }
-
-    public Builder sweepSpeed(float sweepSpeed) {
-      mSweepSpeed = sweepSpeed;
-      return this;
-    }
-
-    public Builder rotationSpeed(float rotationSpeed) {
-      mRotationSpeed = rotationSpeed;
-      return this;
-    }
-
-    public Builder minSweepAngle(int minSweepAngle) {
-      mMinSweepAngle = minSweepAngle;
-      return this;
-    }
-
-    public Builder maxSweepAngle(int maxSweepAngle) {
-      mMaxSweepAngle = maxSweepAngle;
       return this;
     }
 
@@ -403,24 +377,10 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       return this;
     }
 
-    public Builder style(Style style) {
-      mStyle = style;
-      return this;
-    }
-
-    public Builder sweepInterpolator(Interpolator interpolator) {
-      mSweepInterpolator = interpolator;
-      return this;
-    }
-
-    public Builder angleInterpolator(Interpolator interpolator) {
-      mAngleInterpolator = interpolator;
-      return this;
-    }
-
     public ProgressArcDrawable build() {
       return new ProgressArcDrawable(frontColor, mStrokeWidth, mSweepSpeed, mRotationSpeed,
-          mMinSweepAngle, mMaxSweepAngle, mStyle, mAngleInterpolator, mSweepInterpolator);
+          mMinSweepAngle, mMaxSweepAngle, Style.ROUNDED, new LinearInterpolator(),
+          new DecelerateInterpolator());
     }
   }
 }
