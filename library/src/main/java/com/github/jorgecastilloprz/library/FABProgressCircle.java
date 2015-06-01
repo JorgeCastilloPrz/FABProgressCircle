@@ -24,6 +24,9 @@ import android.view.Gravity;
 import android.widget.FrameLayout;
 
 /**
+ * This viewgroup is wrapping your FAB, so it will insert a new child on top to draw the progress
+ * circle around it.
+ *
  * @author Jorge Castillo Pérez
  */
 public class FABProgressCircle extends FrameLayout {
@@ -32,8 +35,8 @@ public class FABProgressCircle extends FrameLayout {
   private int frontColor;
   private int arcWidth;
   private boolean viewsAdded;
-
   private ProgressArcView progressArc;
+  private FABProgressListener listener;
 
   public FABProgressCircle(Context context) {
     super(context);
@@ -118,7 +121,19 @@ public class FABProgressCircle extends FrameLayout {
     }
   }
 
+  public void attachListener(FABProgressListener listener) {
+    this.listener = listener;
+  }
+
   public void show() {
     progressArc.fadeIn();
+  }
+
+  public void beginStopAnimation() {
+    if (listener != null) {
+      progressArc.progressiveStop(listener);
+    } else {
+      progressArc.progressiveStop();
+    }
   }
 }

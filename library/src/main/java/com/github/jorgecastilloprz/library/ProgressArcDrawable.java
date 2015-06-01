@@ -40,11 +40,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   public enum Style {NORMAL, ROUNDED}
 
-  public interface OnEndListener {
-    void onEnd(ProgressArcDrawable drawable);
-  }
-
-  public static final Interpolator END_INTERPOLATOR = new LinearInterpolator();
+  static final Interpolator END_INTERPOLATOR = new LinearInterpolator();
   private static final Interpolator DEFAULT_ROTATION_INTERPOLATOR = new LinearInterpolator();
   private static final Interpolator DEFAULT_SWEEP_INTERPOLATOR = new DecelerateInterpolator();
   private static final int ROTATION_ANIMATOR_DURATION = 2000;
@@ -57,22 +53,18 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private ValueAnimator mSweepDisappearingAnimator;
   private ValueAnimator mRotationAnimator;
   private ValueAnimator mEndAnimator;
-  private OnEndListener mOnEndListener;
   private boolean mModeAppearing;
   private Paint mPaint;
   private boolean mRunning;
   private int mCurrentColor;
-  private int mCurrentIndexColor;
   private float mCurrentSweepAngle;
   private float mCurrentRotationAngleOffset = 0;
   private float mCurrentRotationAngle = 0;
   private float mCurrentEndRatio = 1f;
 
-  //params
   private Interpolator mAngleInterpolator;
   private Interpolator mSweepInterpolator;
   private float mStrokeWidth;
-  private int frontColor;
   private float mSweepSpeed;
   private float mRotationSpeed;
   private int mMinSweepAngle;
@@ -83,12 +75,10 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       float rotationSpeed, int minSweepAngle, int maxSweepAngle, Style style,
       Interpolator angleInterpolator, Interpolator sweepInterpolator) {
 
-    this.frontColor = frontColor;
     mCurrentColor = frontColor;
     mSweepInterpolator = sweepInterpolator;
     mAngleInterpolator = angleInterpolator;
     mStrokeWidth = strokeWidth;
-    mCurrentIndexColor = 0;
     mSweepSpeed = sweepSpeed;
     mRotationSpeed = rotationSpeed;
     mMinSweepAngle = minSweepAngle;
@@ -299,11 +289,11 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     mEndAnimator.cancel();
   }
 
-  public void progressiveStop(OnEndListener listener) {
+  public void progressiveStop(final FABProgressListener listener) {
     if (!isRunning() || mEndAnimator.isRunning()) {
       return;
     }
-    mOnEndListener = listener;
+
     mEndAnimator.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
 
@@ -311,7 +301,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
       @Override public void onAnimationEnd(Animator animation) {
         mEndAnimator.removeListener(this);
-        if (mOnEndListener != null) mOnEndListener.onEnd(ProgressArcDrawable.this);
+        if (listener != null) {
+          listener.onFABProgressAnimationEnd();
+        }
       }
 
       @Override public void onAnimationCancel(Animator animation) {
@@ -325,7 +317,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     mEndAnimator.start();
   }
 
-  public void progressiveStop() {
+  void progressiveStop() {
     progressiveStop(null);
   }
 
@@ -333,12 +325,12 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     return mRunning;
   }
 
-  public void setCurrentRotationAngle(float currentRotationAngle) {
+  void setCurrentRotationAngle(float currentRotationAngle) {
     mCurrentRotationAngle = currentRotationAngle;
     invalidateSelf();
   }
 
-  public void setCurrentSweepAngle(float currentSweepAngle) {
+  void setCurrentSweepAngle(float currentSweepAngle) {
     mCurrentSweepAngle = currentSweepAngle;
     invalidateSelf();
   }
@@ -348,7 +340,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     invalidateSelf();
   }
 
-  public static class Builder {
+  static class Builder {
     private float mSweepSpeed;
     private float mRotationSpeed;
     private float mStrokeWidth;
@@ -427,8 +419,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     }
 
     public ProgressArcDrawable build() {
-      return new ProgressArcDrawable(frontColor, mStrokeWidth, mSweepSpeed, mRotationSpeed, mMinSweepAngle,
-          mMaxSweepAngle, mStyle, mAngleInterpolator, mSweepInterpolator);
+      return new ProgressArcDrawable(frontColor, mStrokeWidth, mSweepSpeed, mRotationSpeed,
+          mMinSweepAngle, mMaxSweepAngle, mStyle, mAngleInterpolator, mSweepInterpolator);
     }
   }
 }

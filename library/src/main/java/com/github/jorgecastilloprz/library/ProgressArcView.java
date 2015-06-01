@@ -25,14 +25,14 @@ import android.widget.ProgressBar;
 /**
  * @author Jorge Castillo Pérez
  */
-public class ProgressArcView extends ProgressBar {
+final class ProgressArcView extends ProgressBar {
 
   private final int SHOW_SCALE_ANIM_DURATION = 150;
 
   private int frontColor;
   private int arcWidth;
 
-  public ProgressArcView(Context context, int frontColor, int arcWidth) {
+  ProgressArcView(Context context, int frontColor, int arcWidth) {
     super(context);
     this.frontColor = frontColor;
     this.arcWidth = arcWidth;
@@ -81,11 +81,11 @@ public class ProgressArcView extends ProgressBar {
     return (ProgressArcDrawable) ret;
   }
 
-  public void progressiveStop() {
+  void progressiveStop() {
     checkIndeterminateDrawable().progressiveStop();
   }
 
-  public void progressiveStop(ProgressArcDrawable.OnEndListener listener) {
+  void progressiveStop(FABProgressListener listener) {
     checkIndeterminateDrawable().progressiveStop(listener);
   }
 }
