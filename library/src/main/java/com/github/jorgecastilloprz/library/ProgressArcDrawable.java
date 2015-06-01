@@ -40,23 +40,26 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private final RectF arcBounds = new RectF();
 
-  private ValueAnimator mSweepAppearingAnimator;
-  private ValueAnimator mSweepDisappearingAnimator;
-  private ValueAnimator rotateAnim;
-  private ValueAnimator mEndAnimator;
-  private boolean mModeAppearing;
-  private Paint mPaint;
-  private boolean animationPlaying;
   private float mCurrentSweepAngle;
   private float mCurrentRotationAngleOffset;
   private float mCurrentRotationAngle;
   private float mCurrentEndRatio = 1f;
 
+  private ValueAnimator rotateAnim;
+  private ValueAnimator growAnim;
+  private ValueAnimator shrinkAnim;
+  private ValueAnimator completeAnim;
+
+  private boolean animationPlaying;
+  private boolean mModeAppearing;
+  private boolean completeAnimOnNextGrow;
+
+  private Paint mPaint;
+
   private float mStrokeWidth;
   private int mArcColor;
   private int mMinSweepAngle;
   private int mMaxSweepAngle;
-  private boolean mFirstSweepAnimation;
 
   private Interpolator mSweepInterpolator;
   private Resources res;
@@ -84,9 +87,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
     mSweepInterpolator = new DecelerateInterpolator();
     setupRotateAnimation();
-    setupAppearingAnimation();
-    setupDisappearingAnimation();
-    setupEndAnimation();
+    setupGrowAnimation();
+    setupShrinkAnimation();
+    setupCompleteAnimation();
   }
 
   private void setupRotateAnimation() {
@@ -103,23 +106,18 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     rotateAnim.setRepeatMode(ValueAnimator.RESTART);
   }
 
-  private void setupAppearingAnimation() {
-    mSweepAppearingAnimator = ValueAnimator.ofFloat(mMinSweepAngle, mMaxSweepAngle);
-    mSweepAppearingAnimator.setInterpolator(mSweepInterpolator);
-    mSweepAppearingAnimator.setDuration((long) Utils.SWEEP_ANIMATOR_DURATION);
-    mSweepAppearingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+  private void setupGrowAnimation() {
+    growAnim = ValueAnimator.ofFloat(mMinSweepAngle, mMaxSweepAngle);
+    growAnim.setInterpolator(mSweepInterpolator);
+    growAnim.setDuration((long) Utils.SWEEP_ANIMATOR_DURATION);
+    growAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
         float animatedFraction = Utils.getAnimatedFraction(animation);
-        float angle;
-        if (mFirstSweepAnimation) {
-          angle = animatedFraction * mMaxSweepAngle;
-        } else {
-          angle = mMinSweepAngle + animatedFraction * (mMaxSweepAngle - mMinSweepAngle);
-        }
+        float angle = mMinSweepAngle + animatedFraction * (mMaxSweepAngle - mMinSweepAngle);
         setCurrentSweepAngle(angle);
       }
     });
-    mSweepAppearingAnimator.addListener(new Animator.AnimatorListener() {
+    growAnim.addListener(new Animator.AnimatorListener() {
       boolean cancelled = false;
 
       @Override public void onAnimationStart(Animator animation) {
@@ -129,9 +127,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
       @Override public void onAnimationEnd(Animator animation) {
         if (!cancelled) {
-          mFirstSweepAnimation = false;
           setDisappearing();
-          mSweepDisappearingAnimator.start();
+          shrinkAnim.start();
         }
       }
 
@@ -144,19 +141,19 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     });
   }
 
-  private void setupDisappearingAnimation() {
-    mSweepDisappearingAnimator = ValueAnimator.ofFloat(mMaxSweepAngle, mMinSweepAngle);
-    mSweepDisappearingAnimator.setInterpolator(mSweepInterpolator);
-    mSweepDisappearingAnimator.setDuration((long) Utils.SWEEP_ANIMATOR_DURATION);
+  private void setupShrinkAnimation() {
+    shrinkAnim = ValueAnimator.ofFloat(mMaxSweepAngle, mMinSweepAngle);
+    shrinkAnim.setInterpolator(mSweepInterpolator);
+    shrinkAnim.setDuration((long) Utils.SWEEP_ANIMATOR_DURATION);
 
-    mSweepDisappearingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    shrinkAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
         float animatedFraction = Utils.getAnimatedFraction(animation);
         setCurrentSweepAngle(mMaxSweepAngle - animatedFraction * (mMaxSweepAngle - mMinSweepAngle));
       }
     });
 
-    mSweepDisappearingAnimator.addListener(new Animator.AnimatorListener() {
+    shrinkAnim.addListener(new Animator.AnimatorListener() {
       boolean cancelled;
 
       @Override public void onAnimationStart(Animator animation) {
@@ -166,7 +163,11 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       @Override public void onAnimationEnd(Animator animation) {
         if (!cancelled) {
           setAppearing();
-          mSweepAppearingAnimator.start();
+          if (completeAnimOnNextGrow) {
+            completeAnim.start();
+          } else {
+            growAnim.start();
+          }
         }
       }
 
@@ -179,25 +180,30 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     });
   }
 
-  private void setupEndAnimation() {
-    mEndAnimator = ValueAnimator.ofFloat(1f, 0f);
-    mEndAnimator.setInterpolator(new LinearInterpolator());
-    mEndAnimator.setDuration(Utils.END_ANIMATOR_DURATION);
-    mEndAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+  private void setupCompleteAnimation() {
+    completeAnim = ValueAnimator.ofFloat(mCurrentSweepAngle, 360f);
+    completeAnim.setInterpolator(mSweepInterpolator);
+    completeAnim.setDuration((long) Utils.COMPLETE_ANIM_DURATION);
+    completeAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
-        setEndRatio(1f - Utils.getAnimatedFraction(animation));
+        float animatedFraction = Utils.getAnimatedFraction(animation);
+        float angle = mCurrentSweepAngle + animatedFraction * (360 - mCurrentSweepAngle);
+        setCurrentSweepAngle(angle);
       }
     });
-    mEndAnimator.addListener(new Animator.AnimatorListener() {
-      private boolean cancelled;
+    completeAnim.addListener(new Animator.AnimatorListener() {
+      boolean cancelled = false;
 
       @Override public void onAnimationStart(Animator animation) {
+        rotateAnim.cancel();
         cancelled = false;
+        mModeAppearing = true;
       }
 
       @Override public void onAnimationEnd(Animator animation) {
-        setEndRatio(0f);
-        if (!cancelled) stop();
+        if (!cancelled) {
+          stop();
+        }
       }
 
       @Override public void onAnimationCancel(Animator animation) {
@@ -205,22 +211,17 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       }
 
       @Override public void onAnimationRepeat(Animator animation) {
-
       }
     });
   }
 
   public void reset() {
-    if (isRunning()) {
-      return;
-    }
     stop();
     resetProperties();
     start();
   }
 
   private void resetProperties() {
-    mFirstSweepAnimation = true;
     mCurrentEndRatio = 1f;
     mCurrentSweepAngle = 0;
     mCurrentRotationAngle = 0;
@@ -264,7 +265,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     animationPlaying = true;
     resetProperties();
     rotateAnim.start();
-    mSweepAppearingAnimator.start();
+    growAnim.start();
     invalidateSelf();
   }
 
@@ -276,9 +277,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private void stopAnimators() {
     rotateAnim.cancel();
-    mSweepAppearingAnimator.cancel();
-    mSweepDisappearingAnimator.cancel();
-    mEndAnimator.cancel();
+    growAnim.cancel();
+    shrinkAnim.cancel();
+    completeAnim.cancel();
   }
 
   void progressiveStop() {
@@ -286,17 +287,17 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   void progressiveStop(final FABProgressListener listener) {
-    if (!isRunning() || mEndAnimator.isRunning()) {
+    if (!isRunning() || completeAnim.isRunning()) {
       return;
     }
 
-    mEndAnimator.addListener(new Animator.AnimatorListener() {
+    completeAnim.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animation) {
 
       }
 
       @Override public void onAnimationEnd(Animator animation) {
-        mEndAnimator.removeListener(this);
+        completeAnim.removeListener(this);
         if (listener != null) {
           listener.onFABProgressAnimationEnd();
         }
@@ -310,7 +311,12 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
       }
     });
-    mEndAnimator.start();
+
+    markCompleteAnimToStartOnNextGrow();
+  }
+
+  private void markCompleteAnimToStartOnNextGrow() {
+    completeAnimOnNextGrow = true;
   }
 
   void setCurrentRotationAngle(float currentRotationAngle) {
