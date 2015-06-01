@@ -35,7 +35,6 @@ final class ProgressArcView extends ProgressBar {
 
   private int frontColor;
   private int arcWidth;
-  private Drawable progressDrawable;
 
   ProgressArcView(Context context, int frontColor, int arcWidth) {
     super(context);
@@ -46,11 +45,8 @@ final class ProgressArcView extends ProgressBar {
 
   private void init() {
     setupInitialAlpha();
-
-    ProgressArcDrawable.Builder builder =
-        new ProgressArcDrawable.Builder(getContext()).color(frontColor).strokeWidth(arcWidth);
-    progressDrawable = builder.build();
-    setIndeterminateDrawable(progressDrawable);
+    ProgressArcDrawable arcDrawable = new ProgressArcDrawable(getResources(), arcWidth, frontColor);
+    setIndeterminateDrawable(arcDrawable);
   }
 
   private void setupInitialAlpha() {

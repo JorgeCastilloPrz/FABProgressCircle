@@ -17,7 +17,6 @@ package com.github.jorgecastilloprz.library;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -39,14 +38,11 @@ import android.view.animation.LinearInterpolator;
  */
 final class ProgressArcDrawable extends Drawable implements Animatable {
 
-  public enum Style {NORMAL, ROUNDED}
-
-  static final Interpolator END_INTERPOLATOR = new LinearInterpolator();
   private static final int ROTATION_ANIMATOR_DURATION = 2000;
   private static final int SWEEP_ANIMATOR_DURATION = 600;
   private static final int END_ANIMATOR_DURATION = 200;
 
-  private final RectF fBounds = new RectF();
+  private final RectF arcBounds = new RectF();
 
   private ValueAnimator mSweepAppearingAnimator;
   private ValueAnimator mSweepDisappearingAnimator;
@@ -54,15 +50,12 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private ValueAnimator mEndAnimator;
   private boolean mModeAppearing;
   private Paint mPaint;
-  private boolean mRunning;
-  private int mCurrentColor;
+  private boolean animationPlaying;
   private float mCurrentSweepAngle;
   private float mCurrentRotationAngleOffset = 0;
   private float mCurrentRotationAngle = 0;
   private float mCurrentEndRatio = 1f;
 
-  private Interpolator mAngleInterpolator;
-  private Interpolator mSweepInterpolator;
   private float mStrokeWidth;
   private float mSweepSpeed;
   private float mRotationSpeed;
@@ -70,30 +63,27 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private int mMaxSweepAngle;
   private boolean mFirstSweepAnimation;
 
-  private ProgressArcDrawable(int frontColor, float strokeWidth, float sweepSpeed,
-      float rotationSpeed, int minSweepAngle, int maxSweepAngle, Style style,
-      Interpolator angleInterpolator, Interpolator sweepInterpolator) {
-
-    mCurrentColor = frontColor;
-    mSweepInterpolator = sweepInterpolator;
-    mAngleInterpolator = angleInterpolator;
+  ProgressArcDrawable(Resources res, float strokeWidth, int arcColor) {
     mStrokeWidth = strokeWidth;
-    mSweepSpeed = sweepSpeed;
-    mRotationSpeed = rotationSpeed;
-    mMinSweepAngle = minSweepAngle;
-    mMaxSweepAngle = maxSweepAngle;
+    mSweepSpeed = Float.parseFloat(res.getString(R.string.cpb_default_sweep_speed));
+    mRotationSpeed = Float.parseFloat(res.getString(R.string.cpb_default_rotation_speed));
+    mMinSweepAngle = res.getInteger(R.integer.cpb_default_min_sweep_angle);
+    mMaxSweepAngle = res.getInteger(R.integer.cpb_default_max_sweep_angle);
 
     mPaint = new Paint();
     mPaint.setAntiAlias(true);
     mPaint.setStyle(Paint.Style.STROKE);
-    mPaint.setStrokeWidth(strokeWidth);
-    mPaint.setStrokeCap(style == Style.ROUNDED ? Paint.Cap.ROUND : Paint.Cap.BUTT);
-    mPaint.setColor(frontColor);
+    mPaint.setStrokeWidth(mStrokeWidth);
+    mPaint.setStrokeCap(Paint.Cap.BUTT);
+    mPaint.setColor(arcColor);
 
     setupAnimations();
   }
 
   public void reset() {
+    if (isRunning()) {
+      return;
+    }
     stop();
     resetProperties();
     start();
@@ -105,7 +95,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     mCurrentSweepAngle = 0;
     mCurrentRotationAngle = 0;
     mCurrentRotationAngleOffset = 0;
-    mPaint.setColor(mCurrentColor);
   }
 
   @Override public void draw(Canvas canvas) {
@@ -120,27 +109,27 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       startAngle = (startAngle + (sweepAngle - newSweepAngle)) % 360;
       sweepAngle = newSweepAngle;
     }
-    canvas.drawArc(fBounds, startAngle, sweepAngle, false, mPaint);
+    canvas.drawArc(arcBounds, startAngle, sweepAngle, false, mPaint);
   }
 
   @Override public void setAlpha(int alpha) {
     mPaint.setAlpha(alpha);
   }
 
-  @Override public void setColorFilter(ColorFilter cf) {
-    mPaint.setColorFilter(cf);
+  @Override public void setColorFilter(ColorFilter colorFilter) {
+    mPaint.setColorFilter(colorFilter);
   }
 
   @Override public int getOpacity() {
-    return PixelFormat.TRANSLUCENT;
+    return PixelFormat.RGB_565;
   }
 
   @Override protected void onBoundsChange(Rect bounds) {
     super.onBoundsChange(bounds);
-    fBounds.left = bounds.left + mStrokeWidth / 2f + .5f;
-    fBounds.right = bounds.right - mStrokeWidth / 2f - .5f;
-    fBounds.top = bounds.top + mStrokeWidth / 2f + .5f;
-    fBounds.bottom = bounds.bottom - mStrokeWidth / 2f - .5f;
+    arcBounds.left = bounds.left + mStrokeWidth / 2f + .5f;
+    arcBounds.right = bounds.right - mStrokeWidth / 2f - .5f;
+    arcBounds.top = bounds.top + mStrokeWidth / 2f + .5f;
+    arcBounds.bottom = bounds.bottom - mStrokeWidth / 2f - .5f;
   }
 
   private void setAppearing() {
@@ -154,8 +143,10 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void setupAnimations() {
+    Interpolator mSweepInterpolator = new DecelerateInterpolator();
+
     mRotationAnimator = ValueAnimator.ofFloat(0f, 360f);
-    mRotationAnimator.setInterpolator(mAngleInterpolator);
+    mRotationAnimator.setInterpolator(new LinearInterpolator());
     mRotationAnimator.setDuration((long) (ROTATION_ANIMATOR_DURATION / mRotationSpeed));
     mRotationAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
@@ -237,8 +228,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       @Override public void onAnimationRepeat(Animator animation) {
       }
     });
+
     mEndAnimator = ValueAnimator.ofFloat(1f, 0f);
-    mEndAnimator.setInterpolator(END_INTERPOLATOR);
+    mEndAnimator.setInterpolator(new LinearInterpolator());
     mEndAnimator.setDuration(END_ANIMATOR_DURATION);
     mEndAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
@@ -268,10 +260,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   @Override public void start() {
-    if (isRunning()) {
-      return;
-    }
-    mRunning = true;
+    animationPlaying = true;
     resetProperties();
     mRotationAnimator.start();
     mSweepAppearingAnimator.start();
@@ -279,10 +268,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   @Override public void stop() {
-    if (!isRunning()) {
-      return;
-    }
-    mRunning = false;
+    animationPlaying = false;
     stopAnimators();
     invalidateSelf();
   }
@@ -294,7 +280,11 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     mEndAnimator.cancel();
   }
 
-  public void progressiveStop(final FABProgressListener listener) {
+  void progressiveStop() {
+    progressiveStop(null);
+  }
+
+  void progressiveStop(final FABProgressListener listener) {
     if (!isRunning() || mEndAnimator.isRunning()) {
       return;
     }
@@ -322,12 +312,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     mEndAnimator.start();
   }
 
-  void progressiveStop() {
-    progressiveStop(null);
-  }
-
   @Override public boolean isRunning() {
-    return mRunning;
+    return animationPlaying;
   }
 
   void setCurrentRotationAngle(float currentRotationAngle) {
@@ -343,44 +329,5 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private void setEndRatio(float ratio) {
     mCurrentEndRatio = ratio;
     invalidateSelf();
-  }
-
-  static class Builder {
-    private float mSweepSpeed;
-    private float mRotationSpeed;
-    private float mStrokeWidth;
-    private int mMinSweepAngle;
-    private int mMaxSweepAngle;
-    private int frontColor;
-    private Resources res;
-
-    public Builder(Context context) {
-      this.res = context.getResources();
-      initValues();
-    }
-
-    private void initValues() {
-      mStrokeWidth = res.getDimension(R.dimen.progress_arc_stroke_width);
-      mSweepSpeed = Float.parseFloat(res.getString(R.string.cpb_default_sweep_speed));
-      mRotationSpeed = Float.parseFloat(res.getString(R.string.cpb_default_rotation_speed));
-      mMinSweepAngle = res.getInteger(R.integer.cpb_default_min_sweep_angle);
-      mMaxSweepAngle = res.getInteger(R.integer.cpb_default_max_sweep_angle);
-    }
-
-    public Builder color(int frontColor) {
-      this.frontColor = frontColor;
-      return this;
-    }
-
-    public Builder strokeWidth(float strokeWidth) {
-      mStrokeWidth = strokeWidth;
-      return this;
-    }
-
-    public ProgressArcDrawable build() {
-      return new ProgressArcDrawable(frontColor, mStrokeWidth, mSweepSpeed, mRotationSpeed,
-          mMinSweepAngle, mMaxSweepAngle, Style.ROUNDED, new LinearInterpolator(),
-          new DecelerateInterpolator());
-    }
   }
 }
