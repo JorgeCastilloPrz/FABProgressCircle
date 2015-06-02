@@ -21,6 +21,7 @@ allprojects {
     // Libraries
     libAppCompat = 'com.android.support:appcompat-v7:22.0.0'
     libSupportDesign = 'com.android.support:design:22.2.0'
+    libSupport = 'com.android.support:support-v4:22.2.0'
     libPicasso = 'com.squareup.picasso:picasso:2.5.2'
 
     //Testing libraries

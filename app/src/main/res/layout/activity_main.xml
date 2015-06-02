@@ -42,7 +42,7 @@
           android:layout_height="wrap_content"
           android:src="@drawable/ic_upload"
           app:rippleColor="@color/fab_ripple"
-          app:elevation="4dp"
+          app:elevation="@dimen/fab_elevation"
           app:borderWidth="0dp"
           />
 

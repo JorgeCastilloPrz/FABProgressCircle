@@ -15,12 +15,21 @@
  */
 package com.github.jorgecastilloprz.library;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 
 /**
@@ -88,7 +97,7 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     if (!viewsAdded) {
-      addArcViewAtFront();
+      addArcView();
       setFabGravity();
       viewsAdded = true;
     }
@@ -100,10 +109,10 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
   }
 
   /**
-   * We need to draw a new view with the circle at front, to be able to hide the fab button shadow
-   * (if it exists). The progress circle will have his own shadow effect.
+   * We need to draw a new view with the arc over the FAB, to be able to hide the fab shadow
+   * (if it exists).
    */
-  private void addArcViewAtFront() {
+  private void addArcView() {
     progressArc = new ProgressArcView(getContext(), arcColor, arcWidth);
     progressArc.setInternalListener(this);
     addView(progressArc,
@@ -142,6 +151,48 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
   }
 
   private void displayColorTransformAnimation() {
+    View completeFabView = inflate(getContext(), R.layout.complete_fab, null);
+    addView(completeFabView,
+        new FrameLayout.LayoutParams(getWidth() - arcWidth, getHeight() - arcWidth,
+            Gravity.CENTER));
 
+    tintCompletedOvalWithArcColor(completeFabView);
+    applyElevationIfNeeded(completeFabView);
+
+    int maxContentSize = (int) this.getResources().getDimension(R.dimen.fab_content_size);
+    int mContentPadding = (getChildAt(0).getWidth() - maxContentSize) / 2;
+    completeFabView.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
+
+    ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(completeFabView, "alpha", 1);
+    completeFabAnim.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
+
+    ValueAnimator arcFadeOutAnim = ObjectAnimator.ofFloat(progressArc, "alpha", 0);
+    arcFadeOutAnim.setDuration(150).setInterpolator(new AccelerateInterpolator());
+
+    AnimatorSet animatorSet = new AnimatorSet();
+    animatorSet.playTogether(arcFadeOutAnim, completeFabAnim);
+    animatorSet.start();
+  }
+
+  private void tintCompletedOvalWithArcColor(View completeFabView) {
+    Drawable background = getResources().getDrawable(R.drawable.oval_complete);
+    background.setColorFilter(arcColor, PorterDuff.Mode.SRC_ATOP);
+    completeFabView.setBackgroundDrawable(background);
+  }
+
+  /**
+   * If the code is being executed in api >= 21 the fab could have elevation, so the
+   * completeFabView should have at least the same elevation plus 1, to be able to
+   * get displayed on top
+   *
+   * If we are in pre lollipop, there is no real elevation, so we just need to add the view
+   * normally, as any possible elevation present would be fake (shadow tricks with backgrounds,
+   * etc)
+   *
+   * We can use ViewCompat methods to set / get elevation, as they do not do anything when you
+   * are in a pre lollipop device.
+   */
+  private void applyElevationIfNeeded(View completeFabView) {
+    ViewCompat.setElevation(completeFabView, ViewCompat.getElevation(getChildAt(0)) + 1);
   }
 }
