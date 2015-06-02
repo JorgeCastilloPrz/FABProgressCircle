@@ -43,7 +43,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private float mCurrentSweepAngle;
   private float mCurrentRotationAngleOffset;
   private float mCurrentRotationAngle;
-  private float mCurrentEndRatio = 1f;
 
   private ValueAnimator rotateAnim;
   private ValueAnimator growAnim;
@@ -164,6 +163,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
         if (!cancelled) {
           setAppearing();
           if (completeAnimOnNextGrow) {
+            completeAnimOnNextGrow = false;
             completeAnim.start();
           } else {
             growAnim.start();
@@ -222,7 +222,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void resetProperties() {
-    mCurrentEndRatio = 1f;
     mCurrentSweepAngle = 0;
     mCurrentRotationAngle = 0;
     mCurrentRotationAngleOffset = 0;
@@ -235,11 +234,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       startAngle = startAngle + (360 - sweepAngle);
     }
     startAngle %= 360;
-    if (mCurrentEndRatio < 1f) {
-      float newSweepAngle = sweepAngle * mCurrentEndRatio;
-      startAngle = (startAngle + (sweepAngle - newSweepAngle)) % 360;
-      sweepAngle = newSweepAngle;
-    }
     canvas.drawArc(arcBounds, startAngle, sweepAngle, false, mPaint);
   }
 
@@ -326,11 +320,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   void setCurrentSweepAngle(float currentSweepAngle) {
     mCurrentSweepAngle = currentSweepAngle;
-    invalidateSelf();
-  }
-
-  private void setEndRatio(float ratio) {
-    mCurrentEndRatio = ratio;
     invalidateSelf();
   }
 
