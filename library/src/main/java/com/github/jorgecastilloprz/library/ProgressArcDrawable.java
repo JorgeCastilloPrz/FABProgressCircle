@@ -63,6 +63,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private Interpolator mSweepInterpolator;
   private Resources res;
 
+  private InternalListener internalListener;
+
   ProgressArcDrawable(Resources res, float strokeWidth, int arcColor) {
     this.res = res;
     mStrokeWidth = strokeWidth;
@@ -185,9 +187,10 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     completeAnim.setInterpolator(mSweepInterpolator);
     completeAnim.setDuration((long) Utils.COMPLETE_ANIM_DURATION);
     completeAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
       @Override public void onAnimationUpdate(ValueAnimator animation) {
         float animatedFraction = Utils.getAnimatedFraction(animation);
-        float angle = mCurrentSweepAngle + animatedFraction * (360 - mCurrentSweepAngle);
+        float angle = mMinSweepAngle + animatedFraction * 360;
         setCurrentSweepAngle(angle);
       }
     });
@@ -195,7 +198,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       boolean cancelled = false;
 
       @Override public void onAnimationStart(Animator animation) {
-        rotateAnim.cancel();
         cancelled = false;
         mModeAppearing = true;
       }
@@ -204,6 +206,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
         if (!cancelled) {
           stop();
         }
+
+        completeAnim.removeListener(this);
+        internalListener.onArcAnimationComplete();
       }
 
       @Override public void onAnimationCancel(Animator animation) {
@@ -276,36 +281,12 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     completeAnim.cancel();
   }
 
-  void progressiveStop() {
-    progressiveStop(null);
-  }
-
-  void progressiveStop(final FABProgressListener listener) {
+  void requestCompleteAnimation(final InternalListener internalListener) {
     if (!isRunning() || completeAnim.isRunning()) {
       return;
     }
 
-    completeAnim.addListener(new Animator.AnimatorListener() {
-      @Override public void onAnimationStart(Animator animation) {
-
-      }
-
-      @Override public void onAnimationEnd(Animator animation) {
-        completeAnim.removeListener(this);
-        if (listener != null) {
-          listener.onFABProgressAnimationEnd();
-        }
-      }
-
-      @Override public void onAnimationCancel(Animator animation) {
-
-      }
-
-      @Override public void onAnimationRepeat(Animator animation) {
-
-      }
-    });
-
+    this.internalListener = internalListener;
     markCompleteAnimToStartOnNextGrow();
   }
 

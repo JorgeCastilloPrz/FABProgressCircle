@@ -29,7 +29,7 @@ import android.widget.FrameLayout;
  *
  * @author Jorge Castillo Pérez
  */
-public class FABProgressCircle extends FrameLayout {
+public class FABProgressCircle extends FrameLayout implements InternalListener {
 
   private int arcColor;
   private int arcWidth;
@@ -105,6 +105,7 @@ public class FABProgressCircle extends FrameLayout {
    */
   private void addArcViewAtFront() {
     progressArc = new ProgressArcView(getContext(), arcColor, arcWidth);
+    progressArc.setInternalListener(this);
     addView(progressArc,
         new FrameLayout.LayoutParams(getMeasuredWidth() + arcWidth, getMeasuredHeight() + arcWidth,
             Gravity.CENTER));
@@ -130,10 +131,17 @@ public class FABProgressCircle extends FrameLayout {
   }
 
   public void beginStopAnimation() {
+    progressArc.requestCompleteAnimation();
+  }
+
+  @Override public void onArcAnimationComplete() {
     if (listener != null) {
-      progressArc.progressiveStop(listener);
-    } else {
-      progressArc.progressiveStop();
+      listener.onFABProgressAnimationEnd();
     }
+    displayColorTransformAnimation();
+  }
+
+  private void displayColorTransformAnimation() {
+
   }
 }

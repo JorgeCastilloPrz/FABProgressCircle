@@ -30,6 +30,8 @@ final class ProgressArcView extends ProgressBar {
   private int arcColor;
   private int arcWidth;
 
+  private InternalListener internalListener;
+
   ProgressArcView(Context context, int arcColor, int arcWidth) {
     super(context);
     this.arcColor = arcColor;
@@ -47,6 +49,10 @@ final class ProgressArcView extends ProgressBar {
     setAlpha(0);
   }
 
+  void setInternalListener(InternalListener internalListener) {
+    this.internalListener = internalListener;
+  }
+
   void show() {
     postDelayed(new Runnable() {
       @Override public void run() {
@@ -56,12 +62,8 @@ final class ProgressArcView extends ProgressBar {
     }, Utils.SHOW_SCALE_ANIM_DELAY);
   }
 
-  void progressiveStop() {
-    getDrawable().progressiveStop();
-  }
-
-  void progressiveStop(FABProgressListener listener) {
-    getDrawable().progressiveStop(listener);
+  void requestCompleteAnimation() {
+    getDrawable().requestCompleteAnimation(internalListener);
   }
 
   private ProgressArcDrawable getDrawable() {

@@ -15,22 +15,12 @@
  */
 package com.github.jorgecastilloprz.library;
 
-import android.animation.ValueAnimator;
-
 /**
+ * Just for internal callbacks not interesting for the client code
+ *
  * @author Jorge Castillo Pérez
  */
-class Utils {
+interface InternalListener {
 
-  static final int SHOW_SCALE_ANIM_DELAY = 150;
-  static final int ROTATION_ANIMATOR_DURATION = 2000;
-  static final int SWEEP_ANIMATOR_DURATION = 600;
-  static final int COMPLETE_ANIM_DURATION = 1500;
-
-  static float getAnimatedFraction(ValueAnimator animator) {
-    float fraction = ((float) animator.getCurrentPlayTime()) / animator.getDuration();
-    fraction = Math.min(fraction, 1f);
-    fraction = animator.getInterpolator().getInterpolation(fraction);
-    return fraction;
-  }
+  void onArcAnimationComplete();
 }
