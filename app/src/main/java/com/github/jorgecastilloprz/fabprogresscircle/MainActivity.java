@@ -2,6 +2,7 @@ package com.github.jorgecastilloprz.fabprogresscircle;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ImageView;
 import com.github.jorgecastilloprz.fabprogresscircle.executor.ThreadExecutor;
@@ -57,6 +58,8 @@ public class MainActivity extends Activity implements MockActionCallback, FABPro
   }
 
   @Override public void onFABProgressAnimationEnd() {
-    /* Empty */
+    Snackbar.make(fabProgressCircle, R.string.cloud_upload_complete, Snackbar.LENGTH_LONG)
+        .setAction("Action", null)
+        .show();
   }
 }

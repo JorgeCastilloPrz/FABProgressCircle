@@ -30,7 +30,6 @@ new [Design Support Library][google-design-support].
 
 </com.github.jorgecastilloprz.library.FABProgressCircle>
 ```
-As you can see, it is pretty simple. You just need to wrap the FAB View into the `FABProgressCircle` custom component.
 
 Developed By
 ------------

@@ -15,6 +15,7 @@
  */
 package com.github.jorgecastilloprz.library;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -43,6 +44,8 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
   private int arcWidth;
   private boolean viewsAdded;
   private ProgressArcView progressArc;
+  private View completeFabView;
+
   private FABProgressListener listener;
 
   public FABProgressCircle(Context context) {
@@ -143,34 +146,32 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
   }
 
   @Override public void onArcAnimationComplete() {
-    if (listener != null) {
-      listener.onFABProgressAnimationEnd();
-    }
     displayColorTransformAnimation();
   }
 
   private void displayColorTransformAnimation() {
-    View completeFabView = inflate(getContext(), R.layout.complete_fab, null);
-    addView(completeFabView,
-        new FrameLayout.LayoutParams(getWidth() - arcWidth, getHeight() - arcWidth,
-            Gravity.CENTER));
+    setupCompleteFabView();
+    animateCompleteFabView();
+  }
 
-    tintCompletedOvalWithArcColor(completeFabView);
-    applyElevationIfNeeded(completeFabView);
+  private void setupCompleteFabView() {
+    addCompleteFabView();
+    tintCompleteFabWithArcColor();
+    setupCompleteFabElevation();
 
     int maxContentSize = (int) this.getResources().getDimension(R.dimen.fab_content_size);
     int mContentPadding = (getChildAt(0).getWidth() - maxContentSize) / 2;
     completeFabView.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
-
-    ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(completeFabView, "alpha", 1);
-    completeFabAnim.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
-
-    AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(completeFabAnim, progressArc.getScaleDownAnimator());
-    animatorSet.start();
   }
 
-  private void tintCompletedOvalWithArcColor(View completeFabView) {
+  private void addCompleteFabView() {
+    completeFabView = inflate(getContext(), R.layout.complete_fab, null);
+    addView(completeFabView,
+        new FrameLayout.LayoutParams(getWidth() - arcWidth, getHeight() - arcWidth,
+            Gravity.CENTER));
+  }
+
+  private void tintCompleteFabWithArcColor() {
     Drawable background = getResources().getDrawable(R.drawable.oval_complete);
     background.setColorFilter(arcColor, PorterDuff.Mode.SRC_ATOP);
     completeFabView.setBackgroundDrawable(background);
@@ -188,7 +189,32 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
    * We can use ViewCompat methods to set / get elevation, as they do not do anything when you
    * are in a pre lollipop device.
    */
-  private void applyElevationIfNeeded(View completeFabView) {
+  private void setupCompleteFabElevation() {
     ViewCompat.setElevation(completeFabView, ViewCompat.getElevation(getChildAt(0)) + 1);
+  }
+
+  private void animateCompleteFabView() {
+    ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(completeFabView, "alpha", 1);
+    completeFabAnim.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
+
+    AnimatorSet animatorSet = new AnimatorSet();
+    animatorSet.playTogether(completeFabAnim, progressArc.getScaleDownAnimator());
+    animatorSet.addListener(new Animator.AnimatorListener() {
+      @Override public void onAnimationStart(Animator animator) {
+      }
+
+      @Override public void onAnimationEnd(Animator animator) {
+        if (listener != null) {
+          listener.onFABProgressAnimationEnd();
+        }
+      }
+
+      @Override public void onAnimationCancel(Animator animator) {
+      }
+
+      @Override public void onAnimationRepeat(Animator animator) {
+      }
+    });
+    animatorSet.start();
   }
 }
