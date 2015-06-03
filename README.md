@@ -30,8 +30,11 @@ new [Design Support Library][google-design-support].
 
 </com.github.jorgecastilloprz.FABProgressCircle>
 ```
-It supports **mini size** for the wrapped `FloatingActionButton` too. In the Google Design Support FAB, you will get it working by using the `app:fabSize="mini"`
-custom attribute on it. Check it out, and you will see a mini progress circle around it when clicked :).
+
+Mini Size
+---------
+Mini size is totally supported, so feel free to use the `app:fabSize="mini"` custom attribute on the Google FAB, or the corresponding `mini` custom
+attribute of the fab library you are using.
 
 Structure
 ---------
