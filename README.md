@@ -1,6 +1,6 @@
 FABProgressCircle
 =================
-Android library to provide a material progress spinner around your FloatingActionButton. This component is **compatible with any existent FAB**.
+Android library to provide a material progress circle around your FloatingActionButton. This component is **compatible with any existent FAB**.
  
 `FABProgressCircle` follows material guidelines at 100%. Links to Google samples of this behavior:
 
@@ -30,6 +30,7 @@ new [Design Support Library][google-design-support].
 
 </com.github.jorgecastilloprz.library.FABProgressCircle>
 ```
+As you can see, it is pretty simple. You just need to wrap the FAB View into the `FABProgressCircle` custom component.
 
 Developed By
 ------------
