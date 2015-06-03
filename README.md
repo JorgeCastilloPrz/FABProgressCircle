@@ -35,8 +35,9 @@ custom attribute on it. Check it out, and you will see a mini progress circle ar
 
 Structure
 ---------
-Don't panic about the project structure, as it is totally intentional. I don't want to expose to the users information (classes, methods) they don't need.
-This library is totally intended to be configured through it's custom attributes. That is a good way to preserve material guidelines a little bit.
+Don't panic about the project structure, as package visibility and final classes are totally intentional. I don't want to expose to the users information
+(classes, methods) they don't need. This library is totally intended to be configured through it's custom attributes. That is a good way to preserve
+material guidelines a little bit.
 
 Contributions
 -------------
