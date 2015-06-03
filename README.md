@@ -7,6 +7,30 @@ Android library to provide a material progress spinner around your FloatingActio
 * [Video sample from Google][material-sample-1]
 * [Another video sample from Google][material-sample-2]
 
+How to use
+----------
+You can use the `FABProgressCircle` to wrap any existent FAB. Here it is an example wrapping the Google FloatingActionButton from the brand
+new [Design Support Library][google-design-support].
+```xml
+<com.github.jorgecastilloprz.library.FABProgressCircle
+    android:id="@+id/fabProgressCircle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+  <android.support.design.widget.FloatingActionButton
+      android:id="@+id/fab"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_upload"
+      app:rippleColor="@color/fab_ripple"
+      app:elevation="@dimen/fab_elevation"
+      app:borderWidth="0dp"
+      />
+
+</com.github.jorgecastilloprz.library.FABProgressCircle>
+```
+
 Developed By
 ------------
 * Jorge Castillo Pérez - <jorge.castillo.prz@gmail.com>
@@ -34,3 +58,4 @@ License
 
 [material-sample-1]: http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B0NGgBg38lWWbTlSaHdQZEMtalk/components-progressactivity-typesofindicators-061101_Circular_Aspirational_xhdpi_002.webm
 [material-sample-2]: http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B6Okdz75tqQsa0QwVnd6NVlvWkk/components-progressactivity-typesofindicators-Circular_wFab_xhdpi_003.webm
+[google-design-support]: http://developer.android.com/tools/support-library/features.html#design

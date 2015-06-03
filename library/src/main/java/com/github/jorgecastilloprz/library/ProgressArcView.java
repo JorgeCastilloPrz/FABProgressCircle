@@ -15,8 +15,12 @@
  */
 package com.github.jorgecastilloprz.library;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 
 /**
@@ -69,5 +73,18 @@ final class ProgressArcView extends ProgressBar {
   private ProgressArcDrawable getDrawable() {
     Drawable ret = getIndeterminateDrawable();
     return (ProgressArcDrawable) ret;
+  }
+
+  AnimatorSet getScaleDownAnimator() {
+    float scalePercent = (float) getWidth() / (getWidth() + arcWidth);
+
+    ValueAnimator arcScaleX = ObjectAnimator.ofFloat(this, "scaleX", scalePercent);
+    ValueAnimator arcScaleY = ObjectAnimator.ofFloat(this, "scaleY", scalePercent);
+
+    AnimatorSet set = new AnimatorSet();
+    set.setDuration(150).setInterpolator(new DecelerateInterpolator());
+    set.playTogether(arcScaleX, arcScaleY);
+
+    return set;
   }
 }
