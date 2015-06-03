@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz;
+package com.github.jorgecastilloprz.progressarc.animations;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public interface FABProgressListener {
-
-  void onFABProgressAnimationEnd();
+public interface ArcAnimation {
 }

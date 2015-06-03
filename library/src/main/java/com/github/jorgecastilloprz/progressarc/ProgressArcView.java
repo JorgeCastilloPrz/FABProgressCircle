@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz;
+package com.github.jorgecastilloprz.progressarc;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -22,6 +22,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+import com.github.jorgecastilloprz.listeners.InternalListener;
 
 import static com.github.jorgecastilloprz.Utils.SHOW_SCALE_ANIM_DELAY;
 
@@ -31,14 +32,14 @@ import static com.github.jorgecastilloprz.Utils.SHOW_SCALE_ANIM_DELAY;
  *
  * @author Jorge Castillo Pérez
  */
-final class ProgressArcView extends ProgressBar {
+public final class ProgressArcView extends ProgressBar {
 
   private int arcColor;
   private int arcWidth;
 
   private InternalListener internalListener;
 
-  ProgressArcView(Context context, int arcColor, int arcWidth) {
+  public ProgressArcView(Context context, int arcColor, int arcWidth) {
     super(context);
     this.arcColor = arcColor;
     this.arcWidth = arcWidth;
@@ -55,11 +56,11 @@ final class ProgressArcView extends ProgressBar {
     setAlpha(0);
   }
 
-  void setInternalListener(InternalListener internalListener) {
+  public void setInternalListener(InternalListener internalListener) {
     this.internalListener = internalListener;
   }
 
-  void show() {
+  public void show() {
     postDelayed(new Runnable() {
       @Override public void run() {
         setAlpha(1);
@@ -68,7 +69,7 @@ final class ProgressArcView extends ProgressBar {
     }, SHOW_SCALE_ANIM_DELAY);
   }
 
-  void requestCompleteAnimation() {
+  public void requestCompleteAnimation() {
     getDrawable().requestCompleteAnimation(internalListener);
   }
 
@@ -77,7 +78,7 @@ final class ProgressArcView extends ProgressBar {
     return (ProgressArcDrawable) ret;
   }
 
-  AnimatorSet getScaleDownAnimator() {
+  public AnimatorSet getScaleDownAnimator() {
     float scalePercent = (float) getWidth() / (getWidth() + arcWidth);
 
     ValueAnimator arcScaleX = ObjectAnimator.ofFloat(this, "scaleX", scalePercent);

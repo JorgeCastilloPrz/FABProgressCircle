@@ -36,12 +36,6 @@ Mini Size
 Mini size is totally supported, so feel free to use the `app:fabSize="mini"` custom attribute on the Google FAB, or the corresponding `mini` custom
 attribute of the fab library you are using.
 
-Structure
----------
-Don't panic about the project structure, as package visibility and final classes are totally intentional. I don't want to expose to the users information
-(classes, methods) they don't need. This library is totally intended to be configured through it's custom attributes. That is a good way to preserve
-material guidelines a little bit.
-
 Contributions
 -------------
 Feel free to send `Pull Requests` to this repository if you feel that it lacks some functionality. I will be pleased to accept or discuss about them.

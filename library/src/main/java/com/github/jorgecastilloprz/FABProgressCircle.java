@@ -32,6 +32,9 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import com.github.jorgecastilloprz.library.R;
+import com.github.jorgecastilloprz.listeners.FABProgressListener;
+import com.github.jorgecastilloprz.listeners.InternalListener;
+import com.github.jorgecastilloprz.progressarc.ProgressArcView;
 
 /**
  * This ViewGroup wraps your FAB, so it will insert a new child on top to draw the progress

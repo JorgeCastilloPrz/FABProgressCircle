@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz;
+package com.github.jorgecastilloprz.progressarc;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -28,6 +28,8 @@ import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import com.github.jorgecastilloprz.listeners.InternalListener;
+import com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory;
 
 import static com.github.jorgecastilloprz.Utils.COMPLETE_ANIM_DURATION;
 import static com.github.jorgecastilloprz.Utils.MAXIMUM_SWEEP_ANGLE;
@@ -50,6 +52,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private float currentRotationAngleOffset;
   private float currentRotationAngle;
 
+  private ArcAnimationFactory animationFactory;
   private ValueAnimator rotateAnim;
   private ValueAnimator growAnim;
   private ValueAnimator shrinkAnim;
@@ -87,6 +90,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void setupAnimations() {
+    animationFactory = new ArcAnimationFactory();
     minSweepAngle = MINIMUM_SWEEP_ANGLE;
     maxSweepAngle = MAXIMUM_SWEEP_ANGLE;
 

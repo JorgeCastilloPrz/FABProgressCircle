@@ -20,16 +20,16 @@ import android.animation.ValueAnimator;
 /**
  * @author Jorge Castillo Pérez
  */
-class Utils {
+public class Utils {
 
-  static final int SHOW_SCALE_ANIM_DELAY = 150;
-  static final int ROTATION_ANIMATOR_DURATION = 2000;
-  static final int SWEEP_ANIMATOR_DURATION = 1000;
-  static final int COMPLETE_ANIM_DURATION = 1500;
-  static final int MINIMUM_SWEEP_ANGLE = 20;
-  static final int MAXIMUM_SWEEP_ANGLE = 300;
+  public static final int SHOW_SCALE_ANIM_DELAY = 150;
+  public static final int ROTATION_ANIMATOR_DURATION = 2000;
+  public static final int SWEEP_ANIMATOR_DURATION = 1000;
+  public static final int COMPLETE_ANIM_DURATION = 1500;
+  public static final int MINIMUM_SWEEP_ANGLE = 20;
+  public static final int MAXIMUM_SWEEP_ANGLE = 300;
 
-  static float getAnimatedFraction(ValueAnimator animator) {
+  public static float getAnimatedFraction(ValueAnimator animator) {
     float fraction = ((float) animator.getCurrentPlayTime()) / animator.getDuration();
     fraction = Math.min(fraction, 1f);
     fraction = animator.getInterpolator().getInterpolation(fraction);
