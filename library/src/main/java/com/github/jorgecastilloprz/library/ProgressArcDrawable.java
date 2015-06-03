@@ -30,9 +30,14 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+import static com.github.jorgecastilloprz.library.Utils.COMPLETE_ANIM_DURATION;
+import static com.github.jorgecastilloprz.library.Utils.ROTATION_ANIMATOR_DURATION;
+import static com.github.jorgecastilloprz.library.Utils.SWEEP_ANIMATOR_DURATION;
+import static com.github.jorgecastilloprz.library.Utils.getAnimatedFraction;
+
 /**
- * This view is used to draw the progress circle animated arc. Canvas and angles will be our best
- * friends here, so it will be done in the onDraw method.
+ * This view is used to draw the progress circle animated arc
+ * Canvas and angles will be our best friends here.
  *
  * @author Jorge Castillo Pérez
  */
@@ -40,9 +45,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private final RectF arcBounds = new RectF();
 
-  private float mCurrentSweepAngle;
-  private float mCurrentRotationAngleOffset;
-  private float mCurrentRotationAngle;
+  private float currentSweepAngle;
+  private float currentRotationAngleOffset;
+  private float currentRotationAngle;
 
   private ValueAnimator rotateAnim;
   private ValueAnimator growAnim;
@@ -51,7 +56,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private boolean animationPlaying;
   private boolean mModeAppearing;
-  private boolean completeAnimOnNextGrow;
+  private boolean completeAnimOnNextCycle;
 
   private Paint mPaint;
 
@@ -60,7 +65,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private int mMinSweepAngle;
   private int mMaxSweepAngle;
 
-  private Interpolator mSweepInterpolator;
+  private Interpolator sweepInterpolator;
   private Resources res;
 
   private InternalListener internalListener;
@@ -86,7 +91,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     mMinSweepAngle = res.getInteger(R.integer.min_sweep_angle);
     mMaxSweepAngle = res.getInteger(R.integer.max_sweep_angle);
 
-    mSweepInterpolator = new DecelerateInterpolator();
+    sweepInterpolator = new DecelerateInterpolator();
     setupRotateAnimation();
     setupGrowAnimation();
     setupShrinkAnimation();
@@ -96,11 +101,11 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private void setupRotateAnimation() {
     rotateAnim = ValueAnimator.ofFloat(0f, 360f);
     rotateAnim.setInterpolator(new LinearInterpolator());
-    rotateAnim.setDuration((long) Utils.ROTATION_ANIMATOR_DURATION);
+    rotateAnim.setDuration(ROTATION_ANIMATOR_DURATION);
     rotateAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float angle = Utils.getAnimatedFraction(animation) * 360f;
-        setCurrentRotationAngle(angle);
+        float angle = getAnimatedFraction(animation) * 360f;
+        updateCurrentRotationAngle(angle);
       }
     });
     rotateAnim.setRepeatCount(ValueAnimator.INFINITE);
@@ -109,13 +114,13 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private void setupGrowAnimation() {
     growAnim = ValueAnimator.ofFloat(mMinSweepAngle, mMaxSweepAngle);
-    growAnim.setInterpolator(mSweepInterpolator);
-    growAnim.setDuration((long) Utils.SWEEP_ANIMATOR_DURATION);
+    growAnim.setInterpolator(sweepInterpolator);
+    growAnim.setDuration(SWEEP_ANIMATOR_DURATION);
     growAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float animatedFraction = Utils.getAnimatedFraction(animation);
+        float animatedFraction = getAnimatedFraction(animation);
         float angle = mMinSweepAngle + animatedFraction * (mMaxSweepAngle - mMinSweepAngle);
-        setCurrentSweepAngle(angle);
+        updateCurrentSweepAngle(angle);
       }
     });
     growAnim.addListener(new Animator.AnimatorListener() {
@@ -144,13 +149,14 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private void setupShrinkAnimation() {
     shrinkAnim = ValueAnimator.ofFloat(mMaxSweepAngle, mMinSweepAngle);
-    shrinkAnim.setInterpolator(mSweepInterpolator);
-    shrinkAnim.setDuration((long) Utils.SWEEP_ANIMATOR_DURATION);
+    shrinkAnim.setInterpolator(sweepInterpolator);
+    shrinkAnim.setDuration(SWEEP_ANIMATOR_DURATION);
 
     shrinkAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float animatedFraction = Utils.getAnimatedFraction(animation);
-        setCurrentSweepAngle(mMaxSweepAngle - animatedFraction * (mMaxSweepAngle - mMinSweepAngle));
+        float animatedFraction = getAnimatedFraction(animation);
+        updateCurrentSweepAngle(
+            mMaxSweepAngle - animatedFraction * (mMaxSweepAngle - mMinSweepAngle));
       }
     });
 
@@ -164,8 +170,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       @Override public void onAnimationEnd(Animator animation) {
         if (!cancelled) {
           setAppearing();
-          if (completeAnimOnNextGrow) {
-            completeAnimOnNextGrow = false;
+          if (completeAnimOnNextCycle) {
+            completeAnimOnNextCycle = false;
             completeAnim.start();
           } else {
             growAnim.start();
@@ -183,15 +189,15 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void setupCompleteAnimation() {
-    completeAnim = ValueAnimator.ofFloat(mCurrentSweepAngle, 360f);
-    completeAnim.setInterpolator(mSweepInterpolator);
-    completeAnim.setDuration((long) Utils.COMPLETE_ANIM_DURATION);
+    completeAnim = ValueAnimator.ofFloat(currentSweepAngle, 360f);
+    completeAnim.setInterpolator(sweepInterpolator);
+    completeAnim.setDuration(COMPLETE_ANIM_DURATION);
     completeAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
       @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float animatedFraction = Utils.getAnimatedFraction(animation);
+        float animatedFraction = getAnimatedFraction(animation);
         float angle = mMinSweepAngle + animatedFraction * 360;
-        setCurrentSweepAngle(angle);
+        updateCurrentSweepAngle(angle);
       }
     });
     completeAnim.addListener(new Animator.AnimatorListener() {
@@ -227,14 +233,14 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void resetProperties() {
-    mCurrentSweepAngle = 0;
-    mCurrentRotationAngle = 0;
-    mCurrentRotationAngleOffset = 0;
+    currentSweepAngle = 0;
+    currentRotationAngle = 0;
+    currentRotationAngleOffset = 0;
   }
 
   @Override public void draw(Canvas canvas) {
-    float startAngle = mCurrentRotationAngle - mCurrentRotationAngleOffset;
-    float sweepAngle = mCurrentSweepAngle;
+    float startAngle = currentRotationAngle - currentRotationAngleOffset;
+    float sweepAngle = currentSweepAngle;
     if (!mModeAppearing) {
       startAngle = startAngle + (360 - sweepAngle);
     }
@@ -252,12 +258,12 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private void setAppearing() {
     mModeAppearing = true;
-    mCurrentRotationAngleOffset += mMinSweepAngle;
+    currentRotationAngleOffset += mMinSweepAngle;
   }
 
   private void setDisappearing() {
     mModeAppearing = false;
-    mCurrentRotationAngleOffset = mCurrentRotationAngleOffset + (360 - mMaxSweepAngle);
+    currentRotationAngleOffset = currentRotationAngleOffset + (360 - mMaxSweepAngle);
   }
 
   @Override public void start() {
@@ -287,20 +293,20 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     }
 
     this.internalListener = internalListener;
-    markCompleteAnimToStartOnNextGrow();
+    startCompleteAnimationOnNextCycle();
   }
 
-  private void markCompleteAnimToStartOnNextGrow() {
-    completeAnimOnNextGrow = true;
+  private void startCompleteAnimationOnNextCycle() {
+    completeAnimOnNextCycle = true;
   }
 
-  void setCurrentRotationAngle(float currentRotationAngle) {
-    mCurrentRotationAngle = currentRotationAngle;
+  void updateCurrentRotationAngle(float currentRotationAngle) {
+    this.currentRotationAngle = currentRotationAngle;
     invalidateSelf();
   }
 
-  void setCurrentSweepAngle(float currentSweepAngle) {
-    mCurrentSweepAngle = currentSweepAngle;
+  void updateCurrentSweepAngle(float currentSweepAngle) {
+    this.currentSweepAngle = currentSweepAngle;
     invalidateSelf();
   }
 
