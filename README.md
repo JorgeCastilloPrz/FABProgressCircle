@@ -31,6 +31,11 @@ new [Design Support Library][google-design-support].
 </com.github.jorgecastilloprz.library.FABProgressCircle>
 ```
 
+Contributions
+-------------
+Feel free to send `Pull Requests` to this project if you feel that it lacks some functionality. I will be pleased to accept or discuss them.
+However, Material Design guidelines will be required.
+
 Developed By
 ------------
 * Jorge Castillo Pérez - <jorge.castillo.prz@gmail.com>
