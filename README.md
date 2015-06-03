@@ -30,6 +30,13 @@ new [Design Support Library][google-design-support].
 
 </com.github.jorgecastilloprz.FABProgressCircle>
 ```
+When the `FloatingActionButton` gets clicked, the progress circle will appear and the animation will start automatically. The progress animation will be
+indeterminate at the beginning, as you can't really know how long is the asynchronous call going to take to complete.
+
+To play the completing animation, you will need to call
+```java
+fabProgressCircle.beginStopAnimation();
+```
 
 Mini Size
 ---------
