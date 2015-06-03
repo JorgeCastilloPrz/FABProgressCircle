@@ -26,7 +26,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
+import com.github.jorgecastilloprz.Utils;
 import com.github.jorgecastilloprz.listeners.InternalListener;
 import com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory;
 
@@ -63,8 +63,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private int minSweepAngle;
   private int maxSweepAngle;
 
-  private Interpolator sweepInterpolator;
-
   private InternalListener internalListener;
 
   ProgressArcDrawable(float strokeWidth, int arcColor) {
@@ -85,10 +83,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private void setupAnimations() {
     animationFactory = new ArcAnimationFactory();
-    minSweepAngle = ArcAnimationFactory.MINIMUM_SWEEP_ANGLE;
-    maxSweepAngle = ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE;
+    minSweepAngle = Utils.MINIMUM_SWEEP_ANGLE;
+    maxSweepAngle = Utils.MAXIMUM_SWEEP_ANGLE;
 
-    sweepInterpolator = new DecelerateInterpolator();
     setupRotateAnimation();
     setupGrowAnimation();
     setupShrinkAnimation();
@@ -188,6 +185,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
           @Override public void onAnimationStart(Animator animation) {
             cancelled = false;
             mModeAppearing = true;
+            rotateAnim.setInterpolator(new DecelerateInterpolator());
+            rotateAnim.setDuration(Utils.COMPLETE_ROTATE_DURATION);
           }
 
           @Override public void onAnimationEnd(Animator animation) {

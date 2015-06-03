@@ -27,10 +27,6 @@ public class ArcAnimationFactory {
     ROTATE, GROW, SHRINK, COMPLETE
   }
 
-  public static final int MINIMUM_SWEEP_ANGLE = 20;
-  public static final int MAXIMUM_SWEEP_ANGLE = 300;
-  public static final int SWEEP_ANIMATOR_DURATION = 1000;
-
   public ValueAnimator buildAnimation(Type type,
       ValueAnimator.AnimatorUpdateListener updateListener,
       Animator.AnimatorListener animatorListener) {
