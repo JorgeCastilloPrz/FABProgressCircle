@@ -29,7 +29,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 /**
@@ -166,11 +166,16 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
     ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(completeFabView, "alpha", 1);
     completeFabAnim.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
 
-    ValueAnimator arcFadeOutAnim = ObjectAnimator.ofFloat(progressArc, "alpha", 0);
-    arcFadeOutAnim.setDuration(150).setInterpolator(new AccelerateInterpolator());
+    ValueAnimator arcScaleX =
+        ObjectAnimator.ofFloat(progressArc, "scaleX", (float) getWidth() / (getWidth() + arcWidth));
+    arcScaleX.setDuration(150).setInterpolator(new DecelerateInterpolator());
+
+    ValueAnimator arcScaleY =
+        ObjectAnimator.ofFloat(progressArc, "scaleY", (float) getWidth() / (getWidth() + arcWidth));
+    arcScaleY.setDuration(150).setInterpolator(new DecelerateInterpolator());
 
     AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(arcFadeOutAnim, completeFabAnim);
+    animatorSet.playTogether(completeFabAnim, arcScaleX, arcScaleY);
     animatorSet.start();
   }
 
