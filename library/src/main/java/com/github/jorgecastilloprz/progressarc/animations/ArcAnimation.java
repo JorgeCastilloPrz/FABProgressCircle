@@ -15,8 +15,12 @@
  */
 package com.github.jorgecastilloprz.progressarc.animations;
 
+import android.animation.ValueAnimator;
+
 /**
  * @author Jorge Castillo Pérez
  */
 public interface ArcAnimation {
+
+  ValueAnimator getAnimator();
 }

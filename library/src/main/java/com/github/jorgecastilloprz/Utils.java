@@ -23,11 +23,6 @@ import android.animation.ValueAnimator;
 public class Utils {
 
   public static final int SHOW_SCALE_ANIM_DELAY = 150;
-  public static final int ROTATION_ANIMATOR_DURATION = 2000;
-  public static final int SWEEP_ANIMATOR_DURATION = 1000;
-  public static final int COMPLETE_ANIM_DURATION = 1500;
-  public static final int MINIMUM_SWEEP_ANGLE = 20;
-  public static final int MAXIMUM_SWEEP_ANGLE = 300;
 
   public static float getAnimatedFraction(ValueAnimator animator) {
     float fraction = ((float) animator.getCurrentPlayTime()) / animator.getDuration();

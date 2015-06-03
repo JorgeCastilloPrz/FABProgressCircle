@@ -27,15 +27,9 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import com.github.jorgecastilloprz.listeners.InternalListener;
 import com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory;
 
-import static com.github.jorgecastilloprz.Utils.COMPLETE_ANIM_DURATION;
-import static com.github.jorgecastilloprz.Utils.MAXIMUM_SWEEP_ANGLE;
-import static com.github.jorgecastilloprz.Utils.MINIMUM_SWEEP_ANGLE;
-import static com.github.jorgecastilloprz.Utils.ROTATION_ANIMATOR_DURATION;
-import static com.github.jorgecastilloprz.Utils.SWEEP_ANIMATOR_DURATION;
 import static com.github.jorgecastilloprz.Utils.getAnimatedFraction;
 
 /**
@@ -91,8 +85,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private void setupAnimations() {
     animationFactory = new ArcAnimationFactory();
-    minSweepAngle = MINIMUM_SWEEP_ANGLE;
-    maxSweepAngle = MAXIMUM_SWEEP_ANGLE;
+    minSweepAngle = ArcAnimationFactory.MINIMUM_SWEEP_ANGLE;
+    maxSweepAngle = ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE;
 
     sweepInterpolator = new DecelerateInterpolator();
     setupRotateAnimation();
@@ -102,130 +96,116 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void setupRotateAnimation() {
-    rotateAnim = ValueAnimator.ofFloat(0f, 360f);
-    rotateAnim.setInterpolator(new LinearInterpolator());
-    rotateAnim.setDuration(ROTATION_ANIMATOR_DURATION);
-    rotateAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float angle = getAnimatedFraction(animation) * 360f;
-        updateCurrentRotationAngle(angle);
-      }
-    });
-    rotateAnim.setRepeatCount(ValueAnimator.INFINITE);
-    rotateAnim.setRepeatMode(ValueAnimator.RESTART);
+    rotateAnim = animationFactory.buildAnimation(ArcAnimationFactory.Type.ROTATE,
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override public void onAnimationUpdate(ValueAnimator animation) {
+            float angle = getAnimatedFraction(animation) * 360f;
+            updateCurrentRotationAngle(angle);
+          }
+        }, null);
   }
 
   private void setupGrowAnimation() {
-    growAnim = ValueAnimator.ofFloat(minSweepAngle, maxSweepAngle);
-    growAnim.setInterpolator(sweepInterpolator);
-    growAnim.setDuration(SWEEP_ANIMATOR_DURATION);
-    growAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float animatedFraction = getAnimatedFraction(animation);
-        float angle = minSweepAngle + animatedFraction * (maxSweepAngle - minSweepAngle);
-        updateCurrentSweepAngle(angle);
-      }
-    });
-    growAnim.addListener(new Animator.AnimatorListener() {
-      boolean cancelled = false;
+    growAnim = animationFactory.buildAnimation(ArcAnimationFactory.Type.GROW,
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override public void onAnimationUpdate(ValueAnimator animation) {
+            float animatedFraction = getAnimatedFraction(animation);
+            float angle = minSweepAngle + animatedFraction * (maxSweepAngle - minSweepAngle);
+            updateCurrentSweepAngle(angle);
+          }
+        }, new Animator.AnimatorListener() {
+          boolean cancelled = false;
 
-      @Override public void onAnimationStart(Animator animation) {
-        cancelled = false;
-        mModeAppearing = true;
-      }
+          @Override public void onAnimationStart(Animator animation) {
+            cancelled = false;
+            mModeAppearing = true;
+          }
 
-      @Override public void onAnimationEnd(Animator animation) {
-        if (!cancelled) {
-          setDisappearing();
-          shrinkAnim.start();
-        }
-      }
+          @Override public void onAnimationEnd(Animator animation) {
+            if (!cancelled) {
+              setDisappearing();
+              shrinkAnim.start();
+            }
+          }
 
-      @Override public void onAnimationCancel(Animator animation) {
-        cancelled = true;
-      }
+          @Override public void onAnimationCancel(Animator animation) {
+            cancelled = true;
+          }
 
-      @Override public void onAnimationRepeat(Animator animation) {
-      }
-    });
+          @Override public void onAnimationRepeat(Animator animation) {
+          }
+        });
   }
 
   private void setupShrinkAnimation() {
-    shrinkAnim = ValueAnimator.ofFloat(maxSweepAngle, minSweepAngle);
-    shrinkAnim.setInterpolator(sweepInterpolator);
-    shrinkAnim.setDuration(SWEEP_ANIMATOR_DURATION);
-
-    shrinkAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float animatedFraction = getAnimatedFraction(animation);
-        updateCurrentSweepAngle(maxSweepAngle - animatedFraction * (maxSweepAngle - minSweepAngle));
-      }
-    });
-
-    shrinkAnim.addListener(new Animator.AnimatorListener() {
-      boolean cancelled;
-
-      @Override public void onAnimationStart(Animator animation) {
-        cancelled = false;
-      }
-
-      @Override public void onAnimationEnd(Animator animation) {
-        if (!cancelled) {
-          setAppearing();
-          if (completeAnimOnNextCycle) {
-            completeAnimOnNextCycle = false;
-            completeAnim.start();
-          } else {
-            growAnim.start();
+    shrinkAnim = animationFactory.buildAnimation(ArcAnimationFactory.Type.SHRINK,
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override public void onAnimationUpdate(ValueAnimator animation) {
+            float animatedFraction = getAnimatedFraction(animation);
+            updateCurrentSweepAngle(
+                maxSweepAngle - animatedFraction * (maxSweepAngle - minSweepAngle));
           }
-        }
-      }
+        }, new Animator.AnimatorListener() {
+          boolean cancelled;
 
-      @Override public void onAnimationCancel(Animator animation) {
-        cancelled = true;
-      }
+          @Override public void onAnimationStart(Animator animation) {
+            cancelled = false;
+          }
 
-      @Override public void onAnimationRepeat(Animator animation) {
-      }
-    });
+          @Override public void onAnimationEnd(Animator animation) {
+            if (!cancelled) {
+              setAppearing();
+              if (completeAnimOnNextCycle) {
+                completeAnimOnNextCycle = false;
+                completeAnim.start();
+              } else {
+                growAnim.start();
+              }
+            }
+          }
+
+          @Override public void onAnimationCancel(Animator animation) {
+            cancelled = true;
+          }
+
+          @Override public void onAnimationRepeat(Animator animation) {
+          }
+        });
   }
 
   private void setupCompleteAnimation() {
-    completeAnim = ValueAnimator.ofFloat(currentSweepAngle, 360f);
-    completeAnim.setInterpolator(sweepInterpolator);
-    completeAnim.setDuration(COMPLETE_ANIM_DURATION);
-    completeAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    completeAnim = animationFactory.buildAnimation(ArcAnimationFactory.Type.COMPLETE,
+        new ValueAnimator.AnimatorUpdateListener() {
 
-      @Override public void onAnimationUpdate(ValueAnimator animation) {
-        float animatedFraction = getAnimatedFraction(animation);
-        float angle = minSweepAngle + animatedFraction * 360;
-        updateCurrentSweepAngle(angle);
-      }
-    });
-    completeAnim.addListener(new Animator.AnimatorListener() {
-      boolean cancelled = false;
+          @Override public void onAnimationUpdate(ValueAnimator animation) {
+            float animatedFraction = getAnimatedFraction(animation);
+            float angle = minSweepAngle + animatedFraction * 360;
+            updateCurrentSweepAngle(angle);
+          }
+        }, new Animator.AnimatorListener() {
+          boolean cancelled = false;
 
-      @Override public void onAnimationStart(Animator animation) {
-        cancelled = false;
-        mModeAppearing = true;
-      }
+          @Override public void onAnimationStart(Animator animation) {
+            cancelled = false;
+            mModeAppearing = true;
+          }
 
-      @Override public void onAnimationEnd(Animator animation) {
-        if (!cancelled) {
-          stop();
-        }
+          @Override public void onAnimationEnd(Animator animation) {
+            if (!cancelled) {
+              stop();
+            }
 
-        completeAnim.removeListener(this);
-        internalListener.onArcAnimationComplete();
-      }
+            completeAnim.removeListener(this);
+            internalListener.onArcAnimationComplete();
+          }
 
-      @Override public void onAnimationCancel(Animator animation) {
-        cancelled = true;
-      }
+          @Override public void onAnimationCancel(Animator animation) {
+            cancelled = true;
+          }
 
-      @Override public void onAnimationRepeat(Animator animation) {
-      }
-    });
+          @Override public void onAnimationRepeat(Animator animation) {
+          }
+        });
   }
 
   public void reset() {

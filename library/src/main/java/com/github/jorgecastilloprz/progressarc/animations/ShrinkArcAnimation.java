@@ -15,8 +15,31 @@
  */
 package com.github.jorgecastilloprz.progressarc.animations;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
+import android.view.animation.DecelerateInterpolator;
+
+import static com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE;
+import static com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory.MINIMUM_SWEEP_ANGLE;
+
 /**
  * @author Jorge Castillo Pérez
  */
-public class ShrinkArcAnimation {
+public class ShrinkArcAnimation implements ArcAnimation {
+
+  private ValueAnimator shrinkAnim;
+
+  ShrinkArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener,
+      Animator.AnimatorListener listener) {
+
+    shrinkAnim = ValueAnimator.ofFloat(MAXIMUM_SWEEP_ANGLE, MINIMUM_SWEEP_ANGLE);
+    shrinkAnim.setInterpolator(new DecelerateInterpolator());
+    shrinkAnim.setDuration(ArcAnimationFactory.SWEEP_ANIMATOR_DURATION);
+    shrinkAnim.addUpdateListener(updateListener);
+    shrinkAnim.addListener(listener);
+  }
+
+  @Override public ValueAnimator getAnimator() {
+    return shrinkAnim;
+  }
 }
