@@ -34,19 +34,16 @@ import static com.github.jorgecastilloprz.Utils.SHOW_SCALE_ANIM_DELAY;
  */
 public final class ProgressArcView extends ProgressBar {
 
-  private int arcColor;
-  private int arcWidth;
-
   private InternalListener internalListener;
+  private int arcWidth;
 
   public ProgressArcView(Context context, int arcColor, int arcWidth) {
     super(context);
-    this.arcColor = arcColor;
     this.arcWidth = arcWidth;
-    init();
+    init(arcColor, arcWidth);
   }
 
-  private void init() {
+  private void init(int arcColor, int arcWidth) {
     setupInitialAlpha();
     ProgressArcDrawable arcDrawable = new ProgressArcDrawable(arcWidth, arcColor);
     setIndeterminateDrawable(arcDrawable);

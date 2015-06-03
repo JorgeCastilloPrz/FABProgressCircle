@@ -30,6 +30,8 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import com.github.jorgecastilloprz.library.R;
 import com.github.jorgecastilloprz.listeners.FABProgressListener;
@@ -49,6 +51,7 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
   private boolean viewsAdded;
   private ProgressArcView progressArc;
   private View completeFabView;
+  private int completeFabContentSize;
 
   private FABProgressListener listener;
 
@@ -163,8 +166,8 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
     tintCompleteFabWithArcColor();
     setupCompleteFabElevation();
 
-    int maxContentSize = (int) this.getResources().getDimension(R.dimen.fab_content_size);
-    int mContentPadding = (getChildAt(0).getWidth() - maxContentSize) / 2;
+    completeFabContentSize = (int) this.getResources().getDimension(R.dimen.fab_content_size);
+    int mContentPadding = (getChildAt(0).getWidth() - completeFabContentSize) / 2;
     completeFabView.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
   }
 
@@ -201,8 +204,17 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
     ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(completeFabView, "alpha", 1);
     completeFabAnim.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
 
+    View icon = completeFabView.findViewById(R.id.completeFabIcon);
+    ValueAnimator iconScaleAnimX = ObjectAnimator.ofFloat(icon, "scaleX", 0, 1);
+    ValueAnimator iconScaleAnimY = ObjectAnimator.ofFloat(icon, "scaleY", 0, 1);
+
+    Interpolator iconAnimInterpolator = new LinearInterpolator();
+    iconScaleAnimX.setDuration(250).setInterpolator(iconAnimInterpolator);
+    iconScaleAnimY.setDuration(250).setInterpolator(iconAnimInterpolator);
+
     AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(completeFabAnim, progressArc.getScaleDownAnimator());
+    animatorSet.playTogether(completeFabAnim, progressArc.getScaleDownAnimator(), iconScaleAnimX,
+        iconScaleAnimY);
     animatorSet.addListener(new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animator) {
       }
