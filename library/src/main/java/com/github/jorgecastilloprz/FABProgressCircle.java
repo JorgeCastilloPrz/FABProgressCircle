@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.library;
+package com.github.jorgecastilloprz;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -31,6 +31,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
+import com.github.jorgecastilloprz.library.R;
 
 /**
  * This ViewGroup wraps your FAB, so it will insert a new child on top to draw the progress

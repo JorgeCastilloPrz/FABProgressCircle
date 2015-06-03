@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.library;
+package com.github.jorgecastilloprz;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
@@ -30,10 +29,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-import static com.github.jorgecastilloprz.library.Utils.COMPLETE_ANIM_DURATION;
-import static com.github.jorgecastilloprz.library.Utils.ROTATION_ANIMATOR_DURATION;
-import static com.github.jorgecastilloprz.library.Utils.SWEEP_ANIMATOR_DURATION;
-import static com.github.jorgecastilloprz.library.Utils.getAnimatedFraction;
+import static com.github.jorgecastilloprz.Utils.COMPLETE_ANIM_DURATION;
+import static com.github.jorgecastilloprz.Utils.MAXIMUM_SWEEP_ANGLE;
+import static com.github.jorgecastilloprz.Utils.MINIMUM_SWEEP_ANGLE;
+import static com.github.jorgecastilloprz.Utils.ROTATION_ANIMATOR_DURATION;
+import static com.github.jorgecastilloprz.Utils.SWEEP_ANIMATOR_DURATION;
+import static com.github.jorgecastilloprz.Utils.getAnimatedFraction;
 
 /**
  * This view is used to draw the progress circle animated arc
@@ -58,38 +59,36 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private boolean mModeAppearing;
   private boolean completeAnimOnNextCycle;
 
-  private Paint mPaint;
+  private Paint paint;
 
-  private float mStrokeWidth;
-  private int mArcColor;
-  private int mMinSweepAngle;
-  private int mMaxSweepAngle;
+  private float strokeWidth;
+  private int arcColor;
+  private int minSweepAngle;
+  private int maxSweepAngle;
 
   private Interpolator sweepInterpolator;
-  private Resources res;
 
   private InternalListener internalListener;
 
-  ProgressArcDrawable(Resources res, float strokeWidth, int arcColor) {
-    this.res = res;
-    mStrokeWidth = strokeWidth;
-    mArcColor = arcColor;
+  ProgressArcDrawable(float strokeWidth, int arcColor) {
+    this.strokeWidth = strokeWidth;
+    this.arcColor = arcColor;
     initPaint();
     setupAnimations();
   }
 
   private void initPaint() {
-    mPaint = new Paint();
-    mPaint.setAntiAlias(true);
-    mPaint.setStyle(Paint.Style.STROKE);
-    mPaint.setStrokeWidth(mStrokeWidth);
-    mPaint.setStrokeCap(Paint.Cap.BUTT);
-    mPaint.setColor(mArcColor);
+    paint = new Paint();
+    paint.setAntiAlias(true);
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setStrokeWidth(strokeWidth);
+    paint.setStrokeCap(Paint.Cap.BUTT);
+    paint.setColor(arcColor);
   }
 
   private void setupAnimations() {
-    mMinSweepAngle = res.getInteger(R.integer.min_sweep_angle);
-    mMaxSweepAngle = res.getInteger(R.integer.max_sweep_angle);
+    minSweepAngle = MINIMUM_SWEEP_ANGLE;
+    maxSweepAngle = MAXIMUM_SWEEP_ANGLE;
 
     sweepInterpolator = new DecelerateInterpolator();
     setupRotateAnimation();
@@ -113,13 +112,13 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void setupGrowAnimation() {
-    growAnim = ValueAnimator.ofFloat(mMinSweepAngle, mMaxSweepAngle);
+    growAnim = ValueAnimator.ofFloat(minSweepAngle, maxSweepAngle);
     growAnim.setInterpolator(sweepInterpolator);
     growAnim.setDuration(SWEEP_ANIMATOR_DURATION);
     growAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
         float animatedFraction = getAnimatedFraction(animation);
-        float angle = mMinSweepAngle + animatedFraction * (mMaxSweepAngle - mMinSweepAngle);
+        float angle = minSweepAngle + animatedFraction * (maxSweepAngle - minSweepAngle);
         updateCurrentSweepAngle(angle);
       }
     });
@@ -148,15 +147,14 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   private void setupShrinkAnimation() {
-    shrinkAnim = ValueAnimator.ofFloat(mMaxSweepAngle, mMinSweepAngle);
+    shrinkAnim = ValueAnimator.ofFloat(maxSweepAngle, minSweepAngle);
     shrinkAnim.setInterpolator(sweepInterpolator);
     shrinkAnim.setDuration(SWEEP_ANIMATOR_DURATION);
 
     shrinkAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
       @Override public void onAnimationUpdate(ValueAnimator animation) {
         float animatedFraction = getAnimatedFraction(animation);
-        updateCurrentSweepAngle(
-            mMaxSweepAngle - animatedFraction * (mMaxSweepAngle - mMinSweepAngle));
+        updateCurrentSweepAngle(maxSweepAngle - animatedFraction * (maxSweepAngle - minSweepAngle));
       }
     });
 
@@ -196,7 +194,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
       @Override public void onAnimationUpdate(ValueAnimator animation) {
         float animatedFraction = getAnimatedFraction(animation);
-        float angle = mMinSweepAngle + animatedFraction * 360;
+        float angle = minSweepAngle + animatedFraction * 360;
         updateCurrentSweepAngle(angle);
       }
     });
@@ -245,25 +243,25 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
       startAngle = startAngle + (360 - sweepAngle);
     }
     startAngle %= 360;
-    canvas.drawArc(arcBounds, startAngle, sweepAngle, false, mPaint);
+    canvas.drawArc(arcBounds, startAngle, sweepAngle, false, paint);
   }
 
   @Override protected void onBoundsChange(Rect bounds) {
     super.onBoundsChange(bounds);
-    arcBounds.left = bounds.left + mStrokeWidth / 2f + .5f;
-    arcBounds.right = bounds.right - mStrokeWidth / 2f - .5f;
-    arcBounds.top = bounds.top + mStrokeWidth / 2f + .5f;
-    arcBounds.bottom = bounds.bottom - mStrokeWidth / 2f - .5f;
+    arcBounds.left = bounds.left + strokeWidth / 2f + .5f;
+    arcBounds.right = bounds.right - strokeWidth / 2f - .5f;
+    arcBounds.top = bounds.top + strokeWidth / 2f + .5f;
+    arcBounds.bottom = bounds.bottom - strokeWidth / 2f - .5f;
   }
 
   private void setAppearing() {
     mModeAppearing = true;
-    currentRotationAngleOffset += mMinSweepAngle;
+    currentRotationAngleOffset += minSweepAngle;
   }
 
   private void setDisappearing() {
     mModeAppearing = false;
-    currentRotationAngleOffset = currentRotationAngleOffset + (360 - mMaxSweepAngle);
+    currentRotationAngleOffset = currentRotationAngleOffset + (360 - maxSweepAngle);
   }
 
   @Override public void start() {
@@ -315,11 +313,11 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   }
 
   @Override public void setAlpha(int alpha) {
-    mPaint.setAlpha(alpha);
+    paint.setAlpha(alpha);
   }
 
   @Override public void setColorFilter(ColorFilter colorFilter) {
-    mPaint.setColorFilter(colorFilter);
+    paint.setColorFilter(colorFilter);
   }
 
   @Override public int getOpacity() {

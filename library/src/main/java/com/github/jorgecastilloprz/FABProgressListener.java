@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.library;
+package com.github.jorgecastilloprz;
 
 /**
- * Just for internal callbacks not interesting for the client code
- *
  * @author Jorge Castillo Pérez
  */
-interface InternalListener {
+public interface FABProgressListener {
 
-  void onArcAnimationComplete();
+  void onFABProgressAnimationEnd();
 }

@@ -12,7 +12,7 @@ How to use
 You can use the `FABProgressCircle` to wrap any existent FAB. Here it is an example wrapping the Google FloatingActionButton from the brand
 new [Design Support Library][google-design-support].
 ```xml
-<com.github.jorgecastilloprz.library.FABProgressCircle
+<com.github.jorgecastilloprz.FABProgressCircle
     android:id="@+id/fabProgressCircle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -28,10 +28,15 @@ new [Design Support Library][google-design-support].
       app:borderWidth="0dp"
       />
 
-</com.github.jorgecastilloprz.library.FABProgressCircle>
+</com.github.jorgecastilloprz.FABProgressCircle>
 ```
 It supports **mini size** for the wrapped `FloatingActionButton` too. In the Google Design Support FAB, you will get it working by using the `app:fabSize="mini"`
-custom attribute on it. Check it out, and you will see a mini progress circle around it :).
+custom attribute on it. Check it out, and you will see a mini progress circle around it when clicked :).
+
+Structure
+---------
+Don't panic about the project structure, as it is totally intentional. I don't want to expose to the users information (classes, methods) they don't need.
+This library is totally intended to be configured through it's custom attributes. That is a good way to preserve material guidelines a little bit.
 
 Contributions
 -------------

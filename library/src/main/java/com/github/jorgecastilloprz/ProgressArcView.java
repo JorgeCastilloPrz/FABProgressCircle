@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.library;
+package com.github.jorgecastilloprz;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -22,6 +22,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+
+import static com.github.jorgecastilloprz.Utils.SHOW_SCALE_ANIM_DELAY;
 
 /**
  * This view contains the animated arc and depends totally on {@link ProgressArcDrawable} to get
@@ -45,7 +47,7 @@ final class ProgressArcView extends ProgressBar {
 
   private void init() {
     setupInitialAlpha();
-    ProgressArcDrawable arcDrawable = new ProgressArcDrawable(getResources(), arcWidth, arcColor);
+    ProgressArcDrawable arcDrawable = new ProgressArcDrawable(arcWidth, arcColor);
     setIndeterminateDrawable(arcDrawable);
   }
 
@@ -63,7 +65,7 @@ final class ProgressArcView extends ProgressBar {
         setAlpha(1);
         getDrawable().reset();
       }
-    }, Utils.SHOW_SCALE_ANIM_DELAY);
+    }, SHOW_SCALE_ANIM_DELAY);
   }
 
   void requestCompleteAnimation() {

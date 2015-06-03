@@ -27,7 +27,7 @@
       android:clipToPadding="false"
       >
 
-    <com.github.jorgecastilloprz.library.FABProgressCircle
+    <com.github.jorgecastilloprz.FABProgressCircle
         android:id="@+id/fabProgressCircle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
           app:borderWidth="0dp"
           />
 
-    </com.github.jorgecastilloprz.library.FABProgressCircle>
+    </com.github.jorgecastilloprz.FABProgressCircle>
 
     <ImageView
         android:id="@+id/avatar"

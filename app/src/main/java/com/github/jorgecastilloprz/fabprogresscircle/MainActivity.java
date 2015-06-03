@@ -9,8 +9,8 @@ import com.github.jorgecastilloprz.fabprogresscircle.executor.ThreadExecutor;
 import com.github.jorgecastilloprz.fabprogresscircle.interactor.MockAction;
 import com.github.jorgecastilloprz.fabprogresscircle.interactor.MockActionCallback;
 import com.github.jorgecastilloprz.fabprogresscircle.picasso.GrayscaleCircleTransform;
-import com.github.jorgecastilloprz.library.FABProgressCircle;
-import com.github.jorgecastilloprz.library.FABProgressListener;
+import com.github.jorgecastilloprz.FABProgressCircle;
+import com.github.jorgecastilloprz.FABProgressListener;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends Activity implements MockActionCallback, FABProgressListener {
