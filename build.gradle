@@ -11,7 +11,7 @@ allprojects {
   ext {
     // Android config
     androidCompileSdkVersion = 22
-    androidBuildToolsVersion = "22.0.0"
+    androidBuildToolsVersion = "22.0.1"
     androidMinSdkVersion = 11
     androidTargetSdkVersion = 22
     androidApplicationId = 'com.github.jorgecastilloprz.fabprogresscircle'
