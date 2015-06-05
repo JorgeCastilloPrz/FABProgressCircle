@@ -41,6 +41,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
 
   private int arcColor;
   private int arcWidth;
+  private int cycleDuration;
 
   private CompleteFABView completeFABView;
   private Drawable completeIconDrawable;
@@ -84,6 +85,9 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
         arcWidth = attrArray.getDimensionPixelSize(R.styleable.FABProgressCircle_arcWidth,
             getResources().getDimensionPixelSize(R.dimen.progress_arc_stroke_width));
         completeIconDrawable = attrArray.getDrawable(R.styleable.FABProgressCircle_finalIcon);
+
+        cycleDuration = attrArray.getInteger(R.styleable.FABProgressCircle_cycleDuration,
+            getResources().getInteger(R.integer.default_cycle_duration));
       } finally {
         attrArray.recycle();
       }
@@ -118,7 +122,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
    * (if it exists).
    */
   private void addArcView() {
-    progressArc = new ProgressArcView(getContext(), arcColor, arcWidth);
+    progressArc = new ProgressArcView(getContext(), arcColor, arcWidth, cycleDuration);
     progressArc.setInternalListener(this);
     addView(progressArc,
         new FrameLayout.LayoutParams(getMeasuredWidth() + arcWidth, getMeasuredHeight() + arcWidth,

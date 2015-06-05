@@ -7,5 +7,7 @@
         format="dimension"/>
     <attr name="finalIcon"
         format="reference"/>
+    <attr name="cycleDuration"
+        format="integer"/>
   </declare-styleable>
 </resources>

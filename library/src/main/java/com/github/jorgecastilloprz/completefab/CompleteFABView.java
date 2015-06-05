@@ -65,7 +65,7 @@ public class CompleteFABView extends FrameLayout {
 
   private void setIcon() {
     ImageView iconView = (ImageView) findViewById(R.id.completeFabIcon);
-    iconView.setBackgroundDrawable(
+    iconView.setImageDrawable(
         iconDrawable != null ? iconDrawable : getResources().getDrawable(R.drawable.ic_done));
   }
 

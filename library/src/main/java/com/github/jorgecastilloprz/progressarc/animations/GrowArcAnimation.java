@@ -18,7 +18,6 @@ package com.github.jorgecastilloprz.progressarc.animations;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.view.animation.DecelerateInterpolator;
-import com.github.jorgecastilloprz.Utils;
 
 /**
  * @author Jorge Castillo Pérez
@@ -29,9 +28,10 @@ public class GrowArcAnimation implements ArcAnimation {
 
   GrowArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener,
       Animator.AnimatorListener listener) {
-    growAnim = ValueAnimator.ofFloat(Utils.MINIMUM_SWEEP_ANGLE, Utils.MAXIMUM_SWEEP_ANGLE);
+    growAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MINIMUM_SWEEP_ANGLE,
+        ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE);
     growAnim.setInterpolator(new DecelerateInterpolator());
-    growAnim.setDuration(Utils.SWEEP_ANIMATOR_DURATION);
+    growAnim.setDuration(ArcAnimationFactory.sweepAnimDuration);
     growAnim.addUpdateListener(updateListener);
     growAnim.addListener(listener);
   }

@@ -18,7 +18,6 @@ package com.github.jorgecastilloprz.progressarc.animations;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.view.animation.DecelerateInterpolator;
-import com.github.jorgecastilloprz.Utils;
 
 /**
  * @author Jorge Castillo Pérez
@@ -30,9 +29,10 @@ public class CompleteArcAnimation implements ArcAnimation {
   CompleteArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener,
       Animator.AnimatorListener listener) {
 
-    completeAnim = ValueAnimator.ofFloat(Utils.MAXIMUM_SWEEP_ANGLE, Utils.MINIMUM_SWEEP_ANGLE);
+    completeAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE,
+        ArcAnimationFactory.MINIMUM_SWEEP_ANGLE);
     completeAnim.setInterpolator(new DecelerateInterpolator());
-    completeAnim.setDuration(Utils.COMPLETE_ANIM_DURATION);
+    completeAnim.setDuration(ArcAnimationFactory.completeAnimDuration);
     completeAnim.addUpdateListener(updateListener);
     completeAnim.addListener(listener);
   }
