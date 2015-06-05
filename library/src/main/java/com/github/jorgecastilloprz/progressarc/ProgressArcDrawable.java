@@ -27,7 +27,6 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import com.github.jorgecastilloprz.Utils;
-import com.github.jorgecastilloprz.listeners.InternalListener;
 import com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory;
 
 import static com.github.jorgecastilloprz.Utils.getAnimatedFraction;
@@ -63,7 +62,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private int minSweepAngle;
   private int maxSweepAngle;
 
-  private InternalListener internalListener;
+  private ArcListener internalListener;
 
   ProgressArcDrawable(float strokeWidth, int arcColor) {
     this.strokeWidth = strokeWidth;
@@ -268,7 +267,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     completeAnim.cancel();
   }
 
-  void requestCompleteAnimation(final InternalListener internalListener) {
+  void requestCompleteAnimation(final ArcListener internalListener) {
     if (!isRunning() || completeAnim.isRunning()) {
       return;
     }

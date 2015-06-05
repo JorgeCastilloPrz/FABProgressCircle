@@ -22,7 +22,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
-import com.github.jorgecastilloprz.listeners.InternalListener;
 
 import static com.github.jorgecastilloprz.Utils.SHOW_SCALE_ANIM_DELAY;
 
@@ -34,7 +33,7 @@ import static com.github.jorgecastilloprz.Utils.SHOW_SCALE_ANIM_DELAY;
  */
 public final class ProgressArcView extends ProgressBar {
 
-  private InternalListener internalListener;
+  private ArcListener internalListener;
   private int arcWidth;
 
   public ProgressArcView(Context context, int arcColor, int arcWidth) {
@@ -53,7 +52,7 @@ public final class ProgressArcView extends ProgressBar {
     setAlpha(0);
   }
 
-  public void setInternalListener(InternalListener internalListener) {
+  public void setInternalListener(ArcListener internalListener) {
     this.internalListener = internalListener;
   }
 

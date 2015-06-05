@@ -15,27 +15,20 @@
  */
 package com.github.jorgecastilloprz;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
+import com.github.jorgecastilloprz.completefab.CompleteFABListener;
+import com.github.jorgecastilloprz.completefab.CompleteFABView;
 import com.github.jorgecastilloprz.library.R;
 import com.github.jorgecastilloprz.listeners.FABProgressListener;
-import com.github.jorgecastilloprz.listeners.InternalListener;
+import com.github.jorgecastilloprz.progressarc.ArcListener;
 import com.github.jorgecastilloprz.progressarc.ProgressArcView;
 
 /**
@@ -44,14 +37,16 @@ import com.github.jorgecastilloprz.progressarc.ProgressArcView;
  *
  * @author Jorge Castillo Pérez
  */
-public class FABProgressCircle extends FrameLayout implements InternalListener {
+public class FABProgressCircle extends FrameLayout implements ArcListener, CompleteFABListener {
 
   private int arcColor;
   private int arcWidth;
+
+  private CompleteFABView completeFABView;
+  private Drawable completeIconDrawable;
+
   private boolean viewsAdded;
   private ProgressArcView progressArc;
-  private View completeFabView;
-  private int completeFabContentSize;
 
   private FABProgressListener listener;
 
@@ -88,6 +83,7 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
             getResources().getColor(R.color.fab_orange_dark));
         arcWidth = attrArray.getDimensionPixelSize(R.styleable.FABProgressCircle_arcWidth,
             getResources().getDimensionPixelSize(R.dimen.progress_arc_stroke_width));
+        completeIconDrawable = attrArray.getDrawable(R.styleable.FABProgressCircle_finalIcon);
       } finally {
         attrArray.recycle();
       }
@@ -156,34 +152,6 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
     displayColorTransformAnimation();
   }
 
-  private void displayColorTransformAnimation() {
-    setupCompleteFabView();
-    animateCompleteFabView();
-  }
-
-  private void setupCompleteFabView() {
-    addCompleteFabView();
-    tintCompleteFabWithArcColor();
-    setupCompleteFabElevation();
-
-    completeFabContentSize = (int) this.getResources().getDimension(R.dimen.fab_content_size);
-    int mContentPadding = (getChildAt(0).getWidth() - completeFabContentSize) / 2;
-    completeFabView.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
-  }
-
-  private void addCompleteFabView() {
-    completeFabView = inflate(getContext(), R.layout.complete_fab, null);
-    addView(completeFabView,
-        new FrameLayout.LayoutParams(getWidth() - arcWidth, getHeight() - arcWidth,
-            Gravity.CENTER));
-  }
-
-  private void tintCompleteFabWithArcColor() {
-    Drawable background = getResources().getDrawable(R.drawable.oval_complete);
-    background.setColorFilter(arcColor, PorterDuff.Mode.SRC_ATOP);
-    completeFabView.setBackgroundDrawable(background);
-  }
-
   /**
    * If the code is being executed in api >= 21 the fab could have elevation, so the
    * completeFabView should have at least the same elevation plus 1, to be able to
@@ -196,41 +164,23 @@ public class FABProgressCircle extends FrameLayout implements InternalListener {
    * We can use ViewCompat methods to set / get elevation, as they do not do anything when you
    * are in a pre lollipop device.
    */
-  private void setupCompleteFabElevation() {
-    ViewCompat.setElevation(completeFabView, ViewCompat.getElevation(getChildAt(0)) + 1);
+  private void displayColorTransformAnimation() {
+    addCompleteFabView();
+    ViewCompat.setElevation(completeFABView, ViewCompat.getElevation(getChildAt(0)) + 1);
+    completeFABView.animate(progressArc.getScaleDownAnimator());
   }
 
-  private void animateCompleteFabView() {
-    ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(completeFabView, "alpha", 1);
-    completeFabAnim.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
+  private void addCompleteFabView() {
+    completeFABView = new CompleteFABView(getContext(), completeIconDrawable, arcColor);
+    completeFABView.attachListener(this);
+    addView(completeFABView,
+        new FrameLayout.LayoutParams(getWidth() - arcWidth, getHeight() - arcWidth,
+            Gravity.CENTER));
+  }
 
-    View icon = completeFabView.findViewById(R.id.completeFabIcon);
-    ValueAnimator iconScaleAnimX = ObjectAnimator.ofFloat(icon, "scaleX", 0, 1);
-    ValueAnimator iconScaleAnimY = ObjectAnimator.ofFloat(icon, "scaleY", 0, 1);
-
-    Interpolator iconAnimInterpolator = new LinearInterpolator();
-    iconScaleAnimX.setDuration(250).setInterpolator(iconAnimInterpolator);
-    iconScaleAnimY.setDuration(250).setInterpolator(iconAnimInterpolator);
-
-    AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(completeFabAnim, progressArc.getScaleDownAnimator(), iconScaleAnimX,
-        iconScaleAnimY);
-    animatorSet.addListener(new Animator.AnimatorListener() {
-      @Override public void onAnimationStart(Animator animator) {
-      }
-
-      @Override public void onAnimationEnd(Animator animator) {
-        if (listener != null) {
-          listener.onFABProgressAnimationEnd();
-        }
-      }
-
-      @Override public void onAnimationCancel(Animator animator) {
-      }
-
-      @Override public void onAnimationRepeat(Animator animator) {
-      }
-    });
-    animatorSet.start();
+  @Override public void onCompleteFABAnimationEnd() {
+    if (listener != null) {
+      listener.onFABProgressAnimationEnd();
+    }
   }
 }

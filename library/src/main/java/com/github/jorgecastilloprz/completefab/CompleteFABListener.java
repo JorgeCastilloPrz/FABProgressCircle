@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.listeners;
+package com.github.jorgecastilloprz.completefab;
 
 /**
- * Just for internal callbacks not interesting for the client code
- *
  * @author Jorge Castillo Pérez
  */
-public interface InternalListener {
+public interface CompleteFABListener {
 
-  void onArcAnimationComplete();
+  void onCompleteFABAnimationEnd();
 }

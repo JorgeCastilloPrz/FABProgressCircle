@@ -26,7 +26,7 @@ public class Utils {
   public static final int MINIMUM_SWEEP_ANGLE = 20;
   public static final int MAXIMUM_SWEEP_ANGLE = 300;
   public static final int SWEEP_ANIMATOR_DURATION = 1000;
-  public static final int COMPLETE_ANIM_DURATION = 2000;
+  public static final int COMPLETE_ANIM_DURATION = SWEEP_ANIMATOR_DURATION * 2;
   public static final int COMPLETE_ROTATE_DURATION = COMPLETE_ANIM_DURATION * 6;
 
   public static float getAnimatedFraction(ValueAnimator animator) {

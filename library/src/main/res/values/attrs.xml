@@ -5,5 +5,7 @@
         format="color"/>
     <attr name="arcWidth"
         format="dimension"/>
+    <attr name="finalIcon"
+        format="reference"/>
   </declare-styleable>
 </resources>
