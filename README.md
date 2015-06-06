@@ -135,7 +135,7 @@ However, **Material Design guidelines will be required**.
 
 Add it to your project
 ----------------------
-If you are working with gradle, add the dependency to your `build.gradle`:
+If you are working with gradle, add the dependency to your `build.gradle` file:
 ```groovy
 dependencies{
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.0@aar'
