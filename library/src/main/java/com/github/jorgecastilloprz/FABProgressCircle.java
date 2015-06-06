@@ -144,6 +144,14 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
     progressArc.show();
   }
 
+  /**
+   * Method exposed to allow the user to hide the animation if something went wrong (like an error
+   * in the async task running.
+   */
+  public void hide() {
+    progressArc.stop();
+  }
+
   public void beginStopAnimation() {
     progressArc.requestCompleteAnimation();
   }

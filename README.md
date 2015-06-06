@@ -39,6 +39,10 @@ To play the completing animation, you will need to call
 ```java
 fabProgressCircle.beginStopAnimation();
 ```
+If something happens to the async task running (some kind of error), you can always stop the animation by doing:
+```java
+fabProgressCircle.hide();
+```
 
 Custom Attributes
 -----------------

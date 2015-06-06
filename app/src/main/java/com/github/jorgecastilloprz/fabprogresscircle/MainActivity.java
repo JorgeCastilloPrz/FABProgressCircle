@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ImageView;
+import com.github.jorgecastilloprz.FABProgressCircle;
 import com.github.jorgecastilloprz.fabprogresscircle.executor.ThreadExecutor;
 import com.github.jorgecastilloprz.fabprogresscircle.interactor.MockAction;
 import com.github.jorgecastilloprz.fabprogresscircle.interactor.MockActionCallback;
 import com.github.jorgecastilloprz.fabprogresscircle.picasso.GrayscaleCircleTransform;
-import com.github.jorgecastilloprz.FABProgressCircle;
 import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import com.squareup.picasso.Picasso;
 
@@ -54,7 +54,8 @@ public class MainActivity extends Activity implements MockActionCallback, FABPro
   }
 
   @Override public void onMockActionComplete() {
-    fabProgressCircle.beginStopAnimation();
+    //fabProgressCircle.beginStopAnimation();
+    fabProgressCircle.hide();
   }
 
   @Override public void onFABProgressAnimationEnd() {

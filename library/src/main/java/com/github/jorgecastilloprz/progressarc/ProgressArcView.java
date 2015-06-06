@@ -65,6 +65,12 @@ public final class ProgressArcView extends ProgressBar {
     }, SHOW_SCALE_ANIM_DELAY);
   }
 
+  public void stop() {
+    ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
+    fadeOutAnim.start();
+    getDrawable().stop();
+  }
+
   public void requestCompleteAnimation() {
     getDrawable().requestCompleteAnimation(internalListener);
   }
