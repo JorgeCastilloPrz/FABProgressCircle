@@ -2,14 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 
 android {
+
   signingConfigs {
     production {
-      keyAlias 'jorgecastilloprz'
+      keyAlias 'android'
       keyPassword 'keystorePassword'
       storeFile file('/home/jorge/android/assets/keystore/production-keystore')
       storePassword 'storePassword'
     }
   }
+
   compileSdkVersion parent.ext.androidCompileSdkVersion
   buildToolsVersion parent.ext.androidBuildToolsVersion
   defaultConfig {

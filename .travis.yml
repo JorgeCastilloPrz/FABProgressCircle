@@ -9,4 +9,4 @@ android:
     - extra-android-m2repository
 
 script:
-  ./gradlew checkstyle build
+  ./gradlew checkstyle assembleDebug
