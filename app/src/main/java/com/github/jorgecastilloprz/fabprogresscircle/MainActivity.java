@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends Activity implements MockActionCallback, FABProgressListener {
 
   private FABProgressCircle fabProgressCircle;
+  private boolean taskRunning;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -42,8 +43,10 @@ public class MainActivity extends Activity implements MockActionCallback, FABPro
 
     findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        fabProgressCircle.show();
-        runMockInteractor();
+        if (!taskRunning) {
+          fabProgressCircle.show();
+          runMockInteractor();
+        }
       }
     });
   }
@@ -51,11 +54,13 @@ public class MainActivity extends Activity implements MockActionCallback, FABPro
   private void runMockInteractor() {
     ThreadExecutor executor = new ThreadExecutor();
     executor.run(new MockAction(this));
+    taskRunning = true;
   }
 
   @Override public void onMockActionComplete() {
-    //fabProgressCircle.beginFinalAnimation();
-    fabProgressCircle.hide();
+    taskRunning = false;
+    fabProgressCircle.beginFinalAnimation();
+    //fabProgressCircle.hide();
   }
 
   @Override public void onFABProgressAnimationEnd() {
