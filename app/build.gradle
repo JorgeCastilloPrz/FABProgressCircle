@@ -30,6 +30,8 @@ dependencies {
   compile parent.ext.libAppCompat
   compile parent.ext.libSupportDesign
   compile parent.ext.libPicasso
+  compile parent.ext.libFabMakovkastar
+  compile parent.ext.libFabFutureSimple
 }
 
 task checkstyle(type: Checkstyle) {

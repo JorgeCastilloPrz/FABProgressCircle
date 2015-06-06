@@ -36,6 +36,7 @@
         android:layout_marginTop="@dimen/fab_top_margin"
         >
 
+      <!-- Google FAB -->
       <android.support.design.widget.FloatingActionButton
           android:id="@+id/fab"
           android:layout_width="wrap_content"
@@ -45,6 +46,44 @@
           app:elevation="@dimen/fab_elevation"
           app:borderWidth="0dp"
           />
+
+      <!-- Another FAB well known libraries. Uncomment any one of the fabs to test it if you want.
+       You will need to update MainActivity references and castings to match the new lib. -->
+
+      <!-- Makovkastar (melkynov) FAB -->
+
+      <!--<com.melnykov.fab.FloatingActionButton-->
+      <!--android:id="@+id/fab"-->
+      <!--android:layout_width="wrap_content"-->
+      <!--android:layout_height="wrap_content"-->
+      <!--android:src="@drawable/ic_upload"-->
+      <!--app:fab_colorNormal="@color/fab_primary"-->
+      <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
+      <!--app:fab_colorRipple="@color/fab_ripple"-->
+      <!--/>-->
+
+      <!-- Futuresimple FABs -->
+
+      <!-- Basic one -->
+
+      <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
+      <!--android:id="@+id/fab"-->
+      <!--android:layout_width="wrap_content"-->
+      <!--android:layout_height="wrap_content"-->
+      <!--app:fab_icon="@drawable/ic_upload"-->
+      <!--app:fab_colorNormal="@color/fab_primary"-->
+      <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
+      <!--/>-->
+
+      <!-- AddFloatingActionButton -->
+      <!--<com.getbase.floatingactionbutton.AddFloatingActionButton-->
+      <!--android:id="@+id/fab"-->
+      <!--android:layout_width="wrap_content"-->
+      <!--android:layout_height="wrap_content"-->
+      <!--app:fab_plusIconColor="#ffffff"-->
+      <!--app:fab_colorNormal="@color/fab_primary"-->
+      <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
+      <!--/>-->
 
     </com.github.jorgecastilloprz.FABProgressCircle>
 

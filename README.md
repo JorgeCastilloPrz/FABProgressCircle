@@ -114,6 +114,18 @@ attribute of the fab library you are using.
 
 ![Demo Screenshot3][3]
 
+Supported most used FAB libraries
+---------------------------------
+* [FutureSimple android-floating-action-button][4]
+* [Makovkastar android-floating-action-button][5]
+
+Known issues
+------------
+* Still not compatible with complex fab modes like the `FloatingActionsMenu` from the [futuresimple library][4]. I will work on that as soon as possible.
+* Not tested for [makovkastar library][5] hidding / showing mode when attached to some `ListView` / `RecyclerView`. But it will pretty much fail (i think).
+
+Pull requests to solve the above stated issues will be very welcome.
+
 Contributions
 -------------
 Feel free to send `Pull Requests` to this repository if you feel that it lacks some functionality. I will be pleased to accept or discuss about them.
@@ -150,3 +162,5 @@ License
 [1]: ./art/fabprogresscircle.gif
 [2]: ./art/fabprogresscircle2.gif
 [3]: ./art/fabprogressmini.gif
+[4]: https://github.com/futuresimple/android-floating-action-button
+[5]: https://github.com/makovkastar/FloatingActionButton

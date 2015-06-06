@@ -6,6 +6,6 @@
   <dimen name="photo_desc_author">14sp</dimen>
   <dimen name="overflow_icon_size">40dp</dimen>
   <dimen name="fab_margin">26dp</dimen>
-  <dimen name="fab_top_margin">-28dp</dimen>
+  <dimen name="fab_top_margin">-32dp</dimen>
   <dimen name="fab_elevation">4dp</dimen>
 </resources>
