@@ -53,11 +53,30 @@ rather not to change it, but feel free to do it if you need to.
 to change it.
 
 Of course, anyone of the custom attrs can be used with resource references (`@dimen`, `@color`, `@integer` ...) or just literal values.
-Dont forget to add the namespace declaration in your xml file.
+Dont forget to add the namespace declaration to your xml file. You can change the namespace name from `app` to anything you want.
 
 ```xml
 xmlns:app="http://schemas.android.com/apk/res-auto"
 ```
+Code sample
+```xml
+<com.github.jorgecastilloprz.FABProgressCircle
+    android:id="@+id/fabProgressCircle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:arcColor="#00ffff"
+    app:finalIcon="@drawable/ic_bookmark_complete"
+    app:cycleDuration="2000"
+    >
+
+  <android.support.design.widget.FloatingActionButton
+      ...
+      />
+
+</com.github.jorgecastilloprz.FABProgressCircle>
+```
+Remember that the FAB customization / configuration depends on the FAB library, not on this one. This is just a component used to wrap it visually.
+I created it by this way to make it totally compatible with any fab library you might be using into your app.
 
 Mini Size
 ---------
