@@ -10,8 +10,7 @@ Android library to provide a material progress circle around your FloatingAction
  
 `FABProgressCircle` follows material guidelines at 100%. Links to Google samples of this behavior:
 
-* [Video sample from Google][material-sample-1]
-* [Another video sample from Google][material-sample-2]
+* [Sample video from Google][material-sample-2]
 
 How to use
 ----------
