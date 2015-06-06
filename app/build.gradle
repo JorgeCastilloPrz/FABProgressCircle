@@ -4,11 +4,11 @@ apply plugin: 'checkstyle'
 android {
 
   signingConfigs {
-    production {
-      keyAlias 'android'
-      keyPassword 'keystorePassword'
-      storeFile file('/home/jorge/android/assets/keystore/production-keystore')
-      storePassword 'storePassword'
+    release {
+      storeFile file(RELEASE_STORE_FILE)
+      storePassword RELEASE_STORE_PASSWORD
+      keyAlias RELEASE_KEY_ALIAS
+      keyPassword RELEASE_KEY_PASSWORD
     }
   }
 
@@ -25,7 +25,7 @@ android {
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-      signingConfig signingConfigs.production
+      signingConfig signingConfigs.release
     }
   }
   packagingOptions {
