@@ -23,6 +23,7 @@ new [Design Support Library][google-design-support].
     android:layout_height="wrap_content"
     >
 
+  <!-- You can change it with the fab from the library you want to use -->
   <android.support.design.widget.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
