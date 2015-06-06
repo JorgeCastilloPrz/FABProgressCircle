@@ -55,7 +55,7 @@ If something happens to the async task running (some kind of error), you can alw
 ```java
 fabProgressCircle.hide();
 ```
-For listening to the completion animation, use the `FABProgressListener` class:
+For listening to the completion animation, your class needs to implement the `FABProgressListener` interface:
 ```java
 fabProgressCircle.attachListener(this);
 ```
