@@ -47,10 +47,11 @@ The progress animation will be indeterminate at the beginning, as you can't real
 to not allow the users to click on it if the async task and the progress animation are already running / playing at that very moment. I rather leaving that behavior
 to every dev using this library.
 
-To play the completion animation, you will need to call
+To play the completion animation, you will need to call:
 ```java
 fabProgressCircle.beginFinalAnimation();
 ```
+When the completion animation is displayed, the fab gets transformed to its final appearance, and **it becomes not clickable** anymore. This behavior is intentional.
 If something happens to the async task running (some kind of error), you can always stop the animation by doing:
 ```java
 fabProgressCircle.hide();
