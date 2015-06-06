@@ -22,6 +22,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -117,5 +118,13 @@ public class CompleteFABView extends FrameLayout {
       }
     });
     animatorSet.start();
+  }
+
+  /**
+   * This view must block every touch event so the user cannot click on fab anymore if this view
+   * is visible.
+   */
+  @Override public boolean onTouchEvent(MotionEvent event) {
+    return true;
   }
 }

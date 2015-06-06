@@ -34,7 +34,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/fab_margin"
         android:layout_marginTop="@dimen/fab_top_margin"
-        app:arcColor="@android:color/holo_orange_light"
         >
 
       <android.support.design.widget.FloatingActionButton
