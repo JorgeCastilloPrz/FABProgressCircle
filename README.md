@@ -32,8 +32,16 @@ new [Design Support Library][google-design-support].
 
 </com.github.jorgecastilloprz.FABProgressCircle>
 ```
-When the `FloatingActionButton` gets clicked, the progress circle will appear and the animation will start automatically. The progress animation will be
-indeterminate at the beginning, as you can't really know how long is the asynchronous call going to take to complete.
+To show the progress circle, call the `show()` method into the normal click/touch listener of your fab:
+```java
+fabView.setOnClickListener(new View.OnClickListener() {
+  @Override public void onClick(View view) {
+    fabProgressCircle.show();
+    startYourAsynchronousJob();
+  }
+});
+```
+The progress animation will be indeterminate at the beginning, as you can't really know how long is the asynchronous call going to take to complete.
 
 To play the completing animation, you will need to call
 ```java
@@ -42,6 +50,18 @@ fabProgressCircle.beginStopAnimation();
 If something happens to the async task running (some kind of error), you can always stop the animation by doing:
 ```java
 fabProgressCircle.hide();
+```
+For listening to the completion animation, use the `FABProgressListener` class:
+```java
+fabProgressCircle.attachListener(this);
+```
+If you do that, the following method call will be dispatched at the right time. The Snackbar creation is just an example:
+```java
+@Override public void onFABProgressAnimationEnd() {
+    Snackbar.make(fabProgressCircle, R.string.cloud_upload_complete, Snackbar.LENGTH_LONG)
+        .setAction("Action", null)
+        .show();
+}
 ```
 
 Custom Attributes
