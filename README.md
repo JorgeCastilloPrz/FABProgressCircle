@@ -11,7 +11,7 @@ Android library to provide a material progress circle around your FloatingAction
 
 How to use
 ----------
-You can use the `FABProgressCircle` to wrap any existent FAB. Here it is an example wrapping the Google FloatingActionButton from the brand
+You can use the `FABProgressCircle` to wrap **any existent FAB**. Here you have an example wrapping the **Google** FloatingActionButton from the brand
 new [Design Support Library][google-design-support].
 ```xml
 <com.github.jorgecastilloprz.FABProgressCircle
@@ -38,6 +38,25 @@ indeterminate at the beginning, as you can't really know how long is the asynchr
 To play the completing animation, you will need to call
 ```java
 fabProgressCircle.beginStopAnimation();
+```
+
+Custom Attributes
+-----------------
+Even if i want the component to respect material guidelines, you can customize some parameters to adapt it a little bit for your application UI/UX.
+Here they are:
+
+* `app:arcColor="@color/progressArcColor"`: Sets the color for the arc, and for the final aspect of the FAB (after the transform animation).
+* `app:arcWidth="@dimen/arcStrokeWidth"`: Stroke width for the progress circle.
+* `app:finalIcon="@drawable/ic_done"`: By default, this library uses the typical `ic_done` icon at the end of the animation. Normally i would
+rather not to change it, but feel free to do it if you need to.
+* `app:cycleDuration="4000"`: Default value for this one is 2000. It is a medium duration for every animation cycle, but again, you are may want
+to change it.
+
+Of course, anyone of the custom attrs can be used with resource references (`@dimen`, `@color`, `@integer` ...) or just literal values.
+Dont forget to add the namespace declaration in your xml file.
+
+```xml
+xmlns:app="http://schemas.android.com/apk/res-auto"
 ```
 
 Mini Size
