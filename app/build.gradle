@@ -2,9 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 
 android {
+  signingConfigs {
+    production {
+      keyAlias 'jorgecastilloprz'
+      keyPassword 'keystorePassword'
+      storeFile file('/home/jorge/android/assets/keystore/production-keystore')
+      storePassword 'storePassword'
+    }
+  }
   compileSdkVersion parent.ext.androidCompileSdkVersion
   buildToolsVersion parent.ext.androidBuildToolsVersion
-
   defaultConfig {
     applicationId parent.ext.androidApplicationId
     minSdkVersion parent.ext.androidMinSdkVersion
@@ -12,14 +19,13 @@ android {
     versionCode parent.ext.androidVersionCode
     versionName parent.ext.androidVersionName
   }
-
   buildTypes {
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.production
     }
   }
-
   packagingOptions {
     exclude 'META-INF/services/javax.annotation.processing.Processor'
   }
@@ -31,7 +37,6 @@ dependencies {
   compile parent.ext.libSupportDesign
   compile parent.ext.libPicasso
   compile parent.ext.libFabMakovkastar
-  //  compile parent.ext.libFabFutureSimple
 }
 
 task checkstyle(type: Checkstyle) {
