@@ -131,6 +131,24 @@ Contributions
 Feel free to send `Pull Requests` to this repository if you feel that it lacks some functionality. I will be pleased to accept or discuss about them.
 However, **Material Design guidelines will be required**.
 
+Add it to your project
+----------------------
+If you are working with gradle, add the dependency to your `build.gradle`:
+```groovy
+dependencies{
+    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.0'
+}
+```
+if you are working with maven, do it into your `pom.xml`
+```xml
+<dependency>
+    <groupId>com.github.jorgecastilloprz</groupId>
+    <artifactId>fabprogresscircle</artifactId>
+    <version>1.0</version>
+    <type>aar</type>
+</dependency>
+```
+
 Developed By
 ------------
 * Jorge Castillo Pérez - <jorge.castillo.prz@gmail.com>

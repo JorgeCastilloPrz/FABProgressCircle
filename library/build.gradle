@@ -34,4 +34,4 @@ task checkstyle(type: Checkstyle) {
   classpath = files()
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+apply from: '../maven_push.gradle'

@@ -31,7 +31,7 @@ dependencies {
   compile parent.ext.libSupportDesign
   compile parent.ext.libPicasso
   compile parent.ext.libFabMakovkastar
-  compile parent.ext.libFabFutureSimple
+//  compile parent.ext.libFabFutureSimple
 }
 
 task checkstyle(type: Checkstyle) {
@@ -43,4 +43,4 @@ task checkstyle(type: Checkstyle) {
   classpath = files()
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+apply from: '../maven_push.gradle'

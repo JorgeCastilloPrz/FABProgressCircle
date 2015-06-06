@@ -7,12 +7,25 @@ buildscript {
   }
 }
 
+def isReleaseBuild() {
+  return version.contains("SNAPSHOT") == false
+}
+
+allprojects {
+  version = VERSION_NAME
+  group = GROUP
+
+  repositories {
+    mavenCentral()
+  }
+}
+
 allprojects {
   ext {
     // Android config
     androidCompileSdkVersion = 22
     androidBuildToolsVersion = "22.0.1"
-    androidMinSdkVersion = 14
+    androidMinSdkVersion = 11
     androidTargetSdkVersion = 22
     androidApplicationId = 'com.github.jorgecastilloprz.fabprogresscircle'
     androidVersionCode = 1
@@ -35,3 +48,5 @@ allprojects {
     jcenter()
   }
 }
+
+apply plugin: 'android-reporting'
