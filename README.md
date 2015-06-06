@@ -47,7 +47,7 @@ fabView.setOnClickListener(new View.OnClickListener() {
 The progress animation will be indeterminate at the beginning, as you can't really know how long is the asynchronous call going to take to complete.
 
 **IMPORTANT:** The animation will start playing everytime the user clicks on the button. Developers should control the potential spam click in their fab buttons,
-to not allow the users to click on it if the async task and the progress animation are already running / playing at that very moment. I rather leaving that behavior
+to not allow the users to click on it if the asynchronous task and the progress animation are already running / playing at that very moment. I rather leaving that behavior
 to every dev using this library.
 
 To play the completion animation, you will need to call:
@@ -55,7 +55,7 @@ To play the completion animation, you will need to call:
 fabProgressCircle.beginFinalAnimation();
 ```
 When the completion animation is displayed, the fab gets transformed to its final appearance, and **it becomes not clickable** anymore. This behavior is intentional.
-If something happens to the async task running (some kind of error), you can always stop the animation by doing:
+If something happens to the asynchronous task running (some kind of error), you can always stop the animation by doing:
 ```java
 fabProgressCircle.hide();
 ```
