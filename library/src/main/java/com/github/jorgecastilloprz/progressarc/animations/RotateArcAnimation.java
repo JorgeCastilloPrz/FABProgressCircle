@@ -23,13 +23,12 @@ import android.view.animation.LinearInterpolator;
  */
 final class RotateArcAnimation implements ArcAnimation {
 
-  private final int ROTATION_ANIMATOR_DURATION = 2000;
   private ValueAnimator rotateAnim;
 
   RotateArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener) {
     rotateAnim = ValueAnimator.ofFloat(0f, 360f);
     rotateAnim.setInterpolator(new LinearInterpolator());
-    rotateAnim.setDuration(ROTATION_ANIMATOR_DURATION);
+    rotateAnim.setDuration(ArcAnimationFactory.ROTATE_ANIMATOR_DURATION);
     rotateAnim.addUpdateListener(updateListener);
     rotateAnim.setRepeatCount(ValueAnimator.INFINITE);
     rotateAnim.setRepeatMode(ValueAnimator.RESTART);

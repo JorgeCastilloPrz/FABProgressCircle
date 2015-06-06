@@ -31,7 +31,7 @@ public class GrowArcAnimation implements ArcAnimation {
     growAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MINIMUM_SWEEP_ANGLE,
         ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE);
     growAnim.setInterpolator(new DecelerateInterpolator());
-    growAnim.setDuration(ArcAnimationFactory.sweepAnimDuration);
+    growAnim.setDuration(ArcAnimationFactory.SWEEP_ANIM_DURATION);
     growAnim.addUpdateListener(updateListener);
     growAnim.addListener(listener);
   }

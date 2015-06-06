@@ -51,7 +51,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private ValueAnimator completeAnim;
 
   private boolean animationPlaying;
-  private boolean mModeAppearing;
+  private boolean growing;
   private boolean completeAnimOnNextCycle;
 
   private Paint paint;
@@ -60,14 +60,12 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private int arcColor;
   private int minSweepAngle;
   private int maxSweepAngle;
-  private int cycleDuration;
 
   private ArcListener internalListener;
 
-  ProgressArcDrawable(float strokeWidth, int arcColor, int cycleDuration) {
+  ProgressArcDrawable(float strokeWidth, int arcColor) {
     this.strokeWidth = strokeWidth;
     this.arcColor = arcColor;
-    this.cycleDuration = cycleDuration;
     initPaint();
     setupAnimations();
   }
@@ -83,7 +81,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private void setupAnimations() {
     animationFactory = new ArcAnimationFactory();
-    animationFactory.setSweepAnimDuration(cycleDuration / 2);
     minSweepAngle = ArcAnimationFactory.MINIMUM_SWEEP_ANGLE;
     maxSweepAngle = ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE;
 
@@ -116,12 +113,12 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
           @Override public void onAnimationStart(Animator animation) {
             cancelled = false;
-            mModeAppearing = true;
+            growing = true;
           }
 
           @Override public void onAnimationEnd(Animator animation) {
             if (!cancelled) {
-              setDisappearing();
+              setShrinking();
               shrinkAnim.start();
             }
           }
@@ -152,7 +149,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
           @Override public void onAnimationEnd(Animator animation) {
             if (!cancelled) {
-              setAppearing();
+              setGrowing();
               if (completeAnimOnNextCycle) {
                 completeAnimOnNextCycle = false;
                 completeAnim.start();
@@ -185,9 +182,9 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
           @Override public void onAnimationStart(Animator animation) {
             cancelled = false;
-            mModeAppearing = true;
+            growing = true;
             rotateAnim.setInterpolator(new DecelerateInterpolator());
-            rotateAnim.setDuration(ArcAnimationFactory.completeRotateDuration);
+            rotateAnim.setDuration(ArcAnimationFactory.COMPLETE_ROTATE_DURATION);
           }
 
           @Override public void onAnimationEnd(Animator animation) {
@@ -208,6 +205,16 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
         });
   }
 
+  @Override public void draw(Canvas canvas) {
+    float startAngle = currentRotationAngle - currentRotationAngleOffset;
+    float sweepAngle = currentSweepAngle;
+    if (!growing) {
+      startAngle = startAngle + (360 - sweepAngle);
+    }
+
+    canvas.drawArc(arcBounds, startAngle, sweepAngle, false, paint);
+  }
+
   public void reset() {
     stop();
     resetProperties();
@@ -220,16 +227,6 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     currentRotationAngleOffset = 0;
   }
 
-  @Override public void draw(Canvas canvas) {
-    float startAngle = currentRotationAngle - currentRotationAngleOffset;
-    float sweepAngle = currentSweepAngle;
-    if (!mModeAppearing) {
-      startAngle = startAngle + (360 - sweepAngle);
-    }
-    startAngle %= 360;
-    canvas.drawArc(arcBounds, startAngle, sweepAngle, false, paint);
-  }
-
   @Override protected void onBoundsChange(Rect bounds) {
     super.onBoundsChange(bounds);
     arcBounds.left = bounds.left + strokeWidth / 2f + .5f;
@@ -238,13 +235,13 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
     arcBounds.bottom = bounds.bottom - strokeWidth / 2f - .5f;
   }
 
-  private void setAppearing() {
-    mModeAppearing = true;
+  private void setGrowing() {
+    growing = true;
     currentRotationAngleOffset += minSweepAngle;
   }
 
-  private void setDisappearing() {
-    mModeAppearing = false;
+  private void setShrinking() {
+    growing = false;
     currentRotationAngleOffset = currentRotationAngleOffset + (360 - maxSweepAngle);
   }
 

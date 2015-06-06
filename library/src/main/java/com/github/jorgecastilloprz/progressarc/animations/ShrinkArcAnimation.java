@@ -32,7 +32,7 @@ public class ShrinkArcAnimation implements ArcAnimation {
     shrinkAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE,
         ArcAnimationFactory.MINIMUM_SWEEP_ANGLE);
     shrinkAnim.setInterpolator(new DecelerateInterpolator());
-    shrinkAnim.setDuration(ArcAnimationFactory.sweepAnimDuration);
+    shrinkAnim.setDuration(ArcAnimationFactory.SWEEP_ANIM_DURATION);
     shrinkAnim.addUpdateListener(updateListener);
     shrinkAnim.addListener(listener);
   }

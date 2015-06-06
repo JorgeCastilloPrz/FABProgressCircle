@@ -49,8 +49,6 @@ Here they are:
 * `app:arcWidth="@dimen/arcStrokeWidth"`: Stroke width for the progress circle.
 * `app:finalIcon="@drawable/ic_done"`: By default, this library uses the typical `ic_done` icon at the end of the animation. Normally i would
 rather not to change it, but feel free to do it if you need to.
-* `app:cycleDuration="4000"`: Default value for this one is 2000. It is a medium duration for every animation cycle, but again, you are may want
-to change it.
 
 Of course, anyone of the custom attrs can be used with resource references (`@dimen`, `@color`, `@integer` ...) or just literal values.
 Dont forget to add the namespace declaration to your xml file. You can change the namespace name from `app` to anything you want.
@@ -66,7 +64,6 @@ Code sample
     android:layout_height="wrap_content"
     app:arcColor="#00ffff"
     app:finalIcon="@drawable/ic_bookmark_complete"
-    app:cycleDuration="2000"
     >
 
   <android.support.design.widget.FloatingActionButton

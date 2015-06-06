@@ -36,15 +36,15 @@ public final class ProgressArcView extends ProgressBar {
   private ArcListener internalListener;
   private int arcWidth;
 
-  public ProgressArcView(Context context, int arcColor, int arcWidth, int cycleDuration) {
+  public ProgressArcView(Context context, int arcColor, int arcWidth) {
     super(context);
     this.arcWidth = arcWidth;
-    init(arcColor, arcWidth, cycleDuration);
+    init(arcColor, arcWidth);
   }
 
-  private void init(int arcColor, int arcWidth, int cycleDuration) {
+  private void init(int arcColor, int arcWidth) {
     setupInitialAlpha();
-    ProgressArcDrawable arcDrawable = new ProgressArcDrawable(arcWidth, arcColor, cycleDuration);
+    ProgressArcDrawable arcDrawable = new ProgressArcDrawable(arcWidth, arcColor);
     setIndeterminateDrawable(arcDrawable);
   }
 

@@ -32,7 +32,7 @@ public class CompleteArcAnimation implements ArcAnimation {
     completeAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE,
         ArcAnimationFactory.MINIMUM_SWEEP_ANGLE);
     completeAnim.setInterpolator(new DecelerateInterpolator());
-    completeAnim.setDuration(ArcAnimationFactory.completeAnimDuration);
+    completeAnim.setDuration(ArcAnimationFactory.COMPLETE_ANIM_DURATION);
     completeAnim.addUpdateListener(updateListener);
     completeAnim.addListener(listener);
   }
