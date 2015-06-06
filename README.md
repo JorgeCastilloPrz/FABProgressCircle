@@ -2,6 +2,7 @@ FABProgressCircle
 =================
 Android library to provide a material progress circle around your FloatingActionButton. This component is **compatible with any existent FAB**.
 
+![Demo Screenshot][1]
 [Youtube FABProgressCircle video](http://www.youtube.com/watch?v=sP-Ng7e8k6g)
  
 `FABProgressCircle` follows material guidelines at 100%. Links to Google samples of this behavior:
@@ -142,3 +143,4 @@ License
 [material-sample-1]: http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B0NGgBg38lWWbTlSaHdQZEMtalk/components-progressactivity-typesofindicators-061101_Circular_Aspirational_xhdpi_002.webm
 [material-sample-2]: http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B6Okdz75tqQsa0QwVnd6NVlvWkk/components-progressactivity-typesofindicators-Circular_wFab_xhdpi_003.webm
 [google-design-support]: http://developer.android.com/tools/support-library/features.html#design
+[1]: ./art/fabprogresscircle.gif
