@@ -95,6 +95,7 @@ Code sample
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:arcColor="#00ffff"
+    app:arcWidth="7dp"
     app:finalIcon="@drawable/ic_bookmark_complete"
     >
 
