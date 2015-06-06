@@ -113,6 +113,8 @@ Mini Size
 Mini size is totally supported, so feel free to use the `app:fabSize="mini"` custom attribute on the Google FAB, or the corresponding `mini` custom
 attribute of the fab library you are using.
 
+![Demo Screenshot3][3]
+
 Contributions
 -------------
 Feel free to send `Pull Requests` to this repository if you feel that it lacks some functionality. I will be pleased to accept or discuss about them.
@@ -148,3 +150,4 @@ License
 [google-design-support]: http://developer.android.com/tools/support-library/features.html#design
 [1]: ./art/fabprogresscircle.gif
 [2]: ./art/fabprogresscircle2.gif
+[3]: ./art/fabprogressmini.gif
