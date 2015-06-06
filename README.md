@@ -138,7 +138,7 @@ Add it to your project
 If you are working with gradle, add the dependency to your `build.gradle`:
 ```groovy
 dependencies{
-    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.0'
+    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.0@aar'
 }
 ```
 if you are working with maven, do it into your `pom.xml`
