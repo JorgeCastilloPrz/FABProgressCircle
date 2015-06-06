@@ -152,7 +152,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
     progressArc.stop();
   }
 
-  public void beginStopAnimation() {
+  public void beginFinalAnimation() {
     progressArc.requestCompleteAnimation();
   }
 

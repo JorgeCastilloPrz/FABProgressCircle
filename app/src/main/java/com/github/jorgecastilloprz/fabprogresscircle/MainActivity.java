@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements MockActionCallback, FABPro
   }
 
   @Override public void onMockActionComplete() {
-    //fabProgressCircle.beginStopAnimation();
+    //fabProgressCircle.beginFinalAnimation();
     fabProgressCircle.hide();
   }
 

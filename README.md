@@ -43,9 +43,9 @@ fabView.setOnClickListener(new View.OnClickListener() {
 ```
 The progress animation will be indeterminate at the beginning, as you can't really know how long is the asynchronous call going to take to complete.
 
-To play the completing animation, you will need to call
+To play the completion animation, you will need to call
 ```java
-fabProgressCircle.beginStopAnimation();
+fabProgressCircle.beginFinalAnimation();
 ```
 If something happens to the async task running (some kind of error), you can always stop the animation by doing:
 ```java
