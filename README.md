@@ -10,6 +10,7 @@ Android library to provide a material progress circle around your FloatingAction
 ![Demo Screenshot2][2]
 
 **Sample app**:
+
 <a href="https://play.google.com/store/apps/details?id=com.github.jorgecastilloprz.fabprogresscircle">
   <img alt="Get it on Google Play"
        src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
