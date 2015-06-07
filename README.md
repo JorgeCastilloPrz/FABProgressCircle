@@ -1,6 +1,7 @@
 FABProgressCircle
 -----------------
 [![Build Status](https://travis-ci.org/JorgeCastilloPrz/FABProgressCircle.svg?branch=master)](https://travis-ci.org/JorgeCastilloPrz/FABProgressCircle) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FABProgressCircle-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1942)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.jorgecastilloprz/fabprogresscircle/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.jorgecastilloprz/fabprogresscircle)
 
 Android library to provide a material progress circle around your FloatingActionButton. This component is **compatible with any existent FAB**.
 
