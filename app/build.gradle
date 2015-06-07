@@ -4,12 +4,12 @@ apply plugin: 'checkstyle'
 android {
 
   //signingConfigs {
-    //release {
-      //storeFile file(RELEASE_STORE_FILE)
-      //storePassword RELEASE_STORE_PASSWORD
-      //keyAlias RELEASE_KEY_ALIAS
-      //keyPassword RELEASE_KEY_PASSWORD
-    //}
+  //release {
+  //storeFile file(RELEASE_STORE_FILE)
+  //storePassword RELEASE_STORE_PASSWORD
+  //keyAlias RELEASE_KEY_ALIAS
+  //keyPassword RELEASE_KEY_PASSWORD
+  //}
   //}
 
   compileSdkVersion parent.ext.androidCompileSdkVersion
@@ -18,8 +18,8 @@ android {
     applicationId parent.ext.androidApplicationId
     minSdkVersion parent.ext.androidMinSdkVersion
     targetSdkVersion parent.ext.androidTargetSdkVersion
-    versionCode parent.ext.androidVersionCode
-    versionName parent.ext.androidVersionName
+    versionCode 2
+    versionName '1.01'
   }
   buildTypes {
     release {
