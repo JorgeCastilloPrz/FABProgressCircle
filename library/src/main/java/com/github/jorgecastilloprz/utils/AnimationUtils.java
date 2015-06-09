@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz;
+package com.github.jorgecastilloprz.utils;
 
 import android.animation.ValueAnimator;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class Utils {
+public class AnimationUtils {
 
   public static final int SHOW_SCALE_ANIM_DELAY = 150;
 

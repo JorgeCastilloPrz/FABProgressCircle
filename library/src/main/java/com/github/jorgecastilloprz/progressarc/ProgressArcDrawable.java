@@ -28,7 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory;
 
-import static com.github.jorgecastilloprz.Utils.getAnimatedFraction;
+import static com.github.jorgecastilloprz.utils.AnimationUtils.getAnimatedFraction;
 
 /**
  * This view is used to draw the progress circle animated arc
@@ -229,10 +229,10 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   @Override protected void onBoundsChange(Rect bounds) {
     super.onBoundsChange(bounds);
-    arcBounds.left = bounds.left + strokeWidth / 2f + .5f;
-    arcBounds.right = bounds.right - strokeWidth / 2f - .5f;
-    arcBounds.top = bounds.top + strokeWidth / 2f + .5f;
-    arcBounds.bottom = bounds.bottom - strokeWidth / 2f - .5f;
+    arcBounds.left = bounds.left;
+    arcBounds.right = bounds.right;
+    arcBounds.top = bounds.top;
+    arcBounds.bottom = bounds.bottom;
   }
 
   private void setGrowing() {

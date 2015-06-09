@@ -108,21 +108,22 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
     }
   }
 
-  private void setFabGravity() {
-    FrameLayout.LayoutParams fabParams = (FrameLayout.LayoutParams) getChildAt(0).getLayoutParams();
-    fabParams.gravity = Gravity.CENTER;
-  }
-
   /**
    * We need to draw a new view with the arc over the FAB, to be able to hide the fab shadow
    * (if it exists).
    */
   private void addArcView() {
+    setClipChildren(false);
     progressArc = new ProgressArcView(getContext(), arcColor, arcWidth);
     progressArc.setInternalListener(this);
     addView(progressArc,
         new FrameLayout.LayoutParams(getMeasuredWidth() + arcWidth, getMeasuredHeight() + arcWidth,
             Gravity.CENTER));
+  }
+
+  private void setFabGravity() {
+    FrameLayout.LayoutParams fabParams = (FrameLayout.LayoutParams) getChildAt(0).getLayoutParams();
+    fabParams.gravity = Gravity.CENTER;
   }
 
   /**

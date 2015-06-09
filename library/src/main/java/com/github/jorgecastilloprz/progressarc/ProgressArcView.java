@@ -23,7 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 
-import static com.github.jorgecastilloprz.Utils.SHOW_SCALE_ANIM_DELAY;
+import static com.github.jorgecastilloprz.utils.AnimationUtils.SHOW_SCALE_ANIM_DELAY;
 
 /**
  * This view contains the animated arc and depends totally on {@link ProgressArcDrawable} to get
@@ -49,7 +49,7 @@ public final class ProgressArcView extends ProgressBar {
   }
 
   private void setupInitialAlpha() {
-    setAlpha(0);
+    setAlpha(1);
   }
 
   public void setInternalListener(ArcListener internalListener) {
