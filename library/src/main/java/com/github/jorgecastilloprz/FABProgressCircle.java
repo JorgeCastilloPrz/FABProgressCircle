@@ -46,6 +46,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
   private int arcColor;
   private int arcWidth;
   private int circleSize;
+  private boolean roundedStroke;
 
   private CompleteFABView completeFABView;
   private Drawable completeIconDrawable;
@@ -90,6 +91,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
             getResources().getDimensionPixelSize(R.dimen.progress_arc_stroke_width));
         completeIconDrawable = attrArray.getDrawable(R.styleable.FABProgressCircle_finalIcon);
         circleSize = attrArray.getInt(R.styleable.FABProgressCircle_circleSize, 1);
+        roundedStroke = attrArray.getBoolean(R.styleable.FABProgressCircle_roundedStroke, false);
       } finally {
         attrArray.recycle();
       }
@@ -120,7 +122,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
    */
   private void addArcView() {
     setClipChildren(false);
-    progressArc = new ProgressArcView(getContext(), arcColor, arcWidth);
+    progressArc = new ProgressArcView(getContext(), arcColor, arcWidth, roundedStroke);
     progressArc.setInternalListener(this);
     addView(progressArc,
         new FrameLayout.LayoutParams(getFabDimension() + arcWidth, getFabDimension() + arcWidth,

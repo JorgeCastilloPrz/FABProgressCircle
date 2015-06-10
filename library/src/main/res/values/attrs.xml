@@ -14,5 +14,7 @@
       <enum name="mini"
           value="2"/>
     </attr>
+    <attr name="roundedStroke"
+        format="boolean"/>
   </declare-styleable>
 </resources>

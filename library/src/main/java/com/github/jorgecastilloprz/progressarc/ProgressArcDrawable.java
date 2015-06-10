@@ -63,19 +63,19 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   private ArcListener internalListener;
 
-  ProgressArcDrawable(float strokeWidth, int arcColor) {
+  ProgressArcDrawable(float strokeWidth, int arcColor, boolean roundedStroke) {
     this.strokeWidth = strokeWidth;
     this.arcColor = arcColor;
-    initPaint();
+    initPaint(roundedStroke);
     setupAnimations();
   }
 
-  private void initPaint() {
+  private void initPaint(boolean roundedStroke) {
     paint = new Paint();
     paint.setAntiAlias(true);
     paint.setStyle(Paint.Style.STROKE);
     paint.setStrokeWidth(strokeWidth);
-    paint.setStrokeCap(Paint.Cap.BUTT);
+    paint.setStrokeCap(roundedStroke ? Paint.Cap.ROUND : Paint.Cap.BUTT);
     paint.setColor(arcColor);
   }
 

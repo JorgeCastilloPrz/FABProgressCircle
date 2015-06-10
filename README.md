@@ -92,6 +92,10 @@ Here they are:
 * `app:arcWidth="@dimen/arcStrokeWidth"`: Stroke width for the progress circle.
 * `app:finalIcon="@drawable/ic_done"`: By default, this library uses the typical `ic_done` icon at the end of the animation. Normally i would
 rather not to change it, but feel free to do it if you need to.
+* `app:circleSize="normal"` or `app:circleSize="mini"`: Normally you will not use this attribute, as the default size for the circle is the normal one.
+But if you are working with a mini sized FAB, you will need to use it.
+* `app:roundedStroke="true"`: Use this one to have a rounded stroke on both progress circle heads. You will not really notice the difference for the default
+`arcStrokeWidth`, but you will if you are using a higher width to get some cool effects.
 
 Of course, anyone of the custom attrs can be used with resource references (`@dimen`, `@color`, `@integer` ...) or just literal values.
 Dont forget to add the namespace declaration to your xml file. You can change the namespace name from `app` to anything you want.
@@ -122,7 +126,8 @@ I created it by this way to make it totally compatible with any fab library you 
 Mini Size
 ---------
 Mini size is totally supported, so feel free to use the `app:fabSize="mini"` custom attribute on the Google FAB, or the corresponding `mini` custom
-attribute of the fab library you are using.
+attribute of the fab library you are using. **IMPORTANT:** You will need to add the custom attribute `app:circleSize="mini"` to the `FABProgressCircle`
+to get this feature working on properly.
 
 ![Demo Screenshot3][3]
 
