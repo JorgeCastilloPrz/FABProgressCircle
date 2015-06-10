@@ -30,6 +30,7 @@ import com.github.jorgecastilloprz.library.R;
 import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import com.github.jorgecastilloprz.progressarc.ArcListener;
 import com.github.jorgecastilloprz.progressarc.ProgressArcView;
+import com.github.jorgecastilloprz.utils.LibraryUtils;
 
 /**
  * This ViewGroup wraps your FAB, so it will insert a new child on top to draw the progress
@@ -39,8 +40,12 @@ import com.github.jorgecastilloprz.progressarc.ProgressArcView;
  */
 public class FABProgressCircle extends FrameLayout implements ArcListener, CompleteFABListener {
 
+  private final int SIZE_NORMAL = 1;
+  private final int SIZE_MINI = 2;
+
   private int arcColor;
   private int arcWidth;
+  private int circleSize;
 
   private CompleteFABView completeFABView;
   private Drawable completeIconDrawable;
@@ -84,6 +89,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
         arcWidth = attrArray.getDimensionPixelSize(R.styleable.FABProgressCircle_arcWidth,
             getResources().getDimensionPixelSize(R.dimen.progress_arc_stroke_width));
         completeIconDrawable = attrArray.getDrawable(R.styleable.FABProgressCircle_finalIcon);
+        circleSize = attrArray.getInt(R.styleable.FABProgressCircle_circleSize, 1);
       } finally {
         attrArray.recycle();
       }
@@ -103,7 +109,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     if (!viewsAdded) {
       addArcView();
-      setFabGravity();
+      setupFab();
       viewsAdded = true;
     }
   }
@@ -117,13 +123,17 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
     progressArc = new ProgressArcView(getContext(), arcColor, arcWidth);
     progressArc.setInternalListener(this);
     addView(progressArc,
-        new FrameLayout.LayoutParams(getMeasuredWidth() + arcWidth, getMeasuredHeight() + arcWidth,
+        new FrameLayout.LayoutParams(getFabDimension() + arcWidth, getFabDimension() + arcWidth,
             Gravity.CENTER));
   }
 
-  private void setFabGravity() {
+  private void setupFab() {
     FrameLayout.LayoutParams fabParams = (FrameLayout.LayoutParams) getChildAt(0).getLayoutParams();
     fabParams.gravity = Gravity.CENTER;
+    if (LibraryUtils.isAFutureSimpleFAB(getChildAt(0))) {
+      fabParams.topMargin =
+          getResources().getDimensionPixelSize(R.dimen.futuresimple_fab_shadow_offset);
+    }
   }
 
   /**
@@ -183,13 +193,20 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
     completeFABView = new CompleteFABView(getContext(), completeIconDrawable, arcColor);
     completeFABView.attachListener(this);
     addView(completeFABView,
-        new FrameLayout.LayoutParams(getWidth() - arcWidth, getHeight() - arcWidth,
-            Gravity.CENTER));
+        new FrameLayout.LayoutParams(getFabDimension(), getFabDimension(), Gravity.CENTER));
   }
 
   @Override public void onCompleteFABAnimationEnd() {
     if (listener != null) {
       listener.onFABProgressAnimationEnd();
+    }
+  }
+
+  private int getFabDimension() {
+    if (circleSize == SIZE_NORMAL) {
+      return getResources().getDimensionPixelSize(R.dimen.fab_size_normal);
+    } else {
+      return getResources().getDimensionPixelSize(R.dimen.fab_size_mini);
     }
   }
 }

@@ -7,5 +7,12 @@
         format="dimension"/>
     <attr name="finalIcon"
         format="reference"/>
+    <attr name="circleSize"
+        format="enum">
+      <enum name="normal"
+          value="1"/>
+      <enum name="mini"
+          value="2"/>
+    </attr>
   </declare-styleable>
 </resources>

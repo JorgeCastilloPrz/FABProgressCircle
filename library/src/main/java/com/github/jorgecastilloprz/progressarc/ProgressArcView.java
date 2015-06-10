@@ -49,7 +49,7 @@ public final class ProgressArcView extends ProgressBar {
   }
 
   private void setupInitialAlpha() {
-    setAlpha(1);
+    setAlpha(0);
   }
 
   public void setInternalListener(ArcListener internalListener) {
@@ -81,7 +81,7 @@ public final class ProgressArcView extends ProgressBar {
   }
 
   public AnimatorSet getScaleDownAnimator() {
-    float scalePercent = (float) getWidth() / (getWidth() + arcWidth);
+    float scalePercent = (float) getWidth() / (getWidth() + arcWidth + 5);
 
     ValueAnimator arcScaleX = ObjectAnimator.ofFloat(this, "scaleX", scalePercent);
     ValueAnimator arcScaleY = ObjectAnimator.ofFloat(this, "scaleY", scalePercent);
