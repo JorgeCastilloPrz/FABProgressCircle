@@ -18,8 +18,8 @@ android {
     applicationId parent.ext.androidApplicationId
     minSdkVersion parent.ext.androidMinSdkVersion
     targetSdkVersion parent.ext.androidTargetSdkVersion
-    versionCode 2
-    versionName '1.01'
+    versionCode parent.ext.androidVersionCode
+    versionName parent.ext.androidVersionName
   }
   buildTypes {
     release {
@@ -34,13 +34,12 @@ android {
 }
 
 dependencies {
-//  compile 'com.github.jorgecastilloprz:fabprogresscircle:1.0@aar'
-  compile project(':library')
+  compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
   compile parent.ext.libAppCompat
   compile parent.ext.libSupportDesign
   compile parent.ext.libPicasso
-//  compile parent.ext.libFabMakovkastar
-//  compile parent.ext.libFabFutureSimple
+  //  compile parent.ext.libFabMakovkastar
+  //  compile parent.ext.libFabFutureSimple
 }
 
 task checkstyle(type: Checkstyle) {
