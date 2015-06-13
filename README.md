@@ -92,6 +92,8 @@ Here they are:
 * `app:arcWidth="@dimen/arcStrokeWidth"`: Stroke width for the progress circle.
 * `app:finalIcon="@drawable/ic_done"`: By default, this library uses the typical `ic_done` icon at the end of the animation. Normally i would
 rather not to change it, but feel free to do it if you need to.
+* `app:reusable="true"`: By default, the FAB gets locked when the final animation finishes. Use this attr to allow using the FAB multiple times. A new
+fadeout anim will be played after completion, and the component will get reset to it's initial state.
 * `app:circleSize="normal"` or `app:circleSize="mini"`: Normally you will not use this attribute, as the default size for the circle is the normal one.
 But if you are working with a mini sized FAB, you will need to use it.
 * `app:roundedStroke="true"`: Use this one to have a rounded stroke on both progress circle heads. You will not really notice the difference for the default
@@ -153,7 +155,7 @@ Add it to your project
 If you are working with gradle, add the dependency to your `build.gradle` file:
 ```groovy
 dependencies{
-    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.0@aar'
+    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
 }
 ```
 if you are working with maven, do it into your `pom.xml`
@@ -161,7 +163,7 @@ if you are working with maven, do it into your `pom.xml`
 <dependency>
     <groupId>com.github.jorgecastilloprz</groupId>
     <artifactId>fabprogresscircle</artifactId>
-    <version>1.0</version>
+    <version>1.01</version>
     <type>aar</type>
 </dependency>
 ```

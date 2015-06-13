@@ -15,6 +15,7 @@
  */
 package com.github.jorgecastilloprz.progressarc;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -34,15 +35,19 @@ import static com.github.jorgecastilloprz.utils.AnimationUtils.SHOW_SCALE_ANIM_D
 public final class ProgressArcView extends ProgressBar {
 
   private ArcListener internalListener;
+  private int arcColor;
   private int arcWidth;
+  private boolean roundedStroke;
 
   public ProgressArcView(Context context, int arcColor, int arcWidth, boolean roundedStroke) {
     super(context);
+    this.arcColor = arcColor;
     this.arcWidth = arcWidth;
+    this.roundedStroke = roundedStroke;
     init(arcColor, arcWidth, roundedStroke);
   }
 
-  private void init(int arcColor, int arcWidth, boolean roundedStroke) {
+  public void init(int arcColor, int arcWidth, boolean roundedStroke) {
     setupInitialAlpha();
     ProgressArcDrawable arcDrawable = new ProgressArcDrawable(arcWidth, arcColor, roundedStroke);
     setIndeterminateDrawable(arcDrawable);
@@ -66,9 +71,21 @@ public final class ProgressArcView extends ProgressBar {
   }
 
   public void stop() {
-    ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
-    fadeOutAnim.start();
     getDrawable().stop();
+    ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
+    fadeOutAnim.setDuration(100).start();
+  }
+
+  public void reset() {
+    getDrawable().reset();
+
+    ValueAnimator arcScaleX = ObjectAnimator.ofFloat(this, "scaleX", 1);
+    ValueAnimator arcScaleY = ObjectAnimator.ofFloat(this, "scaleY", 1);
+
+    AnimatorSet set = new AnimatorSet();
+    set.setDuration(0).setInterpolator(new DecelerateInterpolator());
+    set.playTogether(arcScaleX, arcScaleY);
+    set.start();
   }
 
   public void requestCompleteAnimation() {
@@ -89,6 +106,20 @@ public final class ProgressArcView extends ProgressBar {
     AnimatorSet set = new AnimatorSet();
     set.setDuration(150).setInterpolator(new DecelerateInterpolator());
     set.playTogether(arcScaleX, arcScaleY);
+    set.addListener(new Animator.AnimatorListener() {
+      @Override public void onAnimationStart(Animator animator) {
+      }
+
+      @Override public void onAnimationEnd(Animator animator) {
+        setupInitialAlpha();
+      }
+
+      @Override public void onAnimationCancel(Animator animator) {
+      }
+
+      @Override public void onAnimationRepeat(Animator animator) {
+      }
+    });
 
     return set;
   }

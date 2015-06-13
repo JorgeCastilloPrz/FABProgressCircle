@@ -38,6 +38,8 @@ import com.github.jorgecastilloprz.library.R;
  */
 public class CompleteFABView extends FrameLayout {
 
+  private final int RESET_DELAY = 3000;
+
   private Drawable iconDrawable;
   private int arcColor;
   private CompleteFABListener listener;
@@ -87,7 +89,11 @@ public class CompleteFABView extends FrameLayout {
   }
 
   public void animate(AnimatorSet progressArcAnimator) {
-    ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(getChildAt(0), "alpha", 1);
+    animate(progressArcAnimator, false);
+  }
+
+  private void animate(AnimatorSet progressArcAnimator, boolean inverse) {
+    ValueAnimator completeFabAnim = ObjectAnimator.ofFloat(getChildAt(0), "alpha", inverse ? 0 : 1);
     completeFabAnim.setDuration(300).setInterpolator(new AccelerateDecelerateInterpolator());
 
     View icon = findViewById(R.id.completeFabIcon);
@@ -100,9 +106,24 @@ public class CompleteFABView extends FrameLayout {
     iconScaleAnimY.setDuration(250).setInterpolator(iconAnimInterpolator);
 
     AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(completeFabAnim, progressArcAnimator, iconScaleAnimX, iconScaleAnimY);
-    animatorSet.addListener(new Animator.AnimatorListener() {
+    if (inverse) {
+      animatorSet.playTogether(completeFabAnim);
+    } else {
+      animatorSet.playTogether(completeFabAnim, progressArcAnimator, iconScaleAnimX,
+          iconScaleAnimY);
+    }
+
+    animatorSet.addListener(inverse ? getInverseAnimatorListener() : getAnimatorListener());
+    if (inverse) {
+      animatorSet.setStartDelay(RESET_DELAY);
+    }
+    animatorSet.start();
+  }
+
+  private Animator.AnimatorListener getAnimatorListener() {
+    return new Animator.AnimatorListener() {
       @Override public void onAnimationStart(Animator animator) {
+        setVisibility(View.VISIBLE);
       }
 
       @Override public void onAnimationEnd(Animator animator) {
@@ -116,8 +137,28 @@ public class CompleteFABView extends FrameLayout {
 
       @Override public void onAnimationRepeat(Animator animator) {
       }
-    });
-    animatorSet.start();
+    };
+  }
+
+  private Animator.AnimatorListener getInverseAnimatorListener() {
+    return new Animator.AnimatorListener() {
+      @Override public void onAnimationStart(Animator animator) {
+      }
+
+      @Override public void onAnimationEnd(Animator animator) {
+        setVisibility(View.GONE);
+      }
+
+      @Override public void onAnimationCancel(Animator animator) {
+      }
+
+      @Override public void onAnimationRepeat(Animator animator) {
+      }
+    };
+  }
+
+  public void reset() {
+    animate(null, true);
   }
 
   /**

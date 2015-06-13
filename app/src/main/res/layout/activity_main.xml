@@ -60,6 +60,7 @@
       <!--app:fab_colorNormal="@color/fab_primary"-->
       <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
       <!--app:fab_colorRipple="@color/fab_ripple"-->
+      <!--app:fab_type="mini"-->
       <!--/>-->
 
       <!-- Futuresimple FABs -->
@@ -75,7 +76,7 @@
       <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
       <!--/>-->
 
-      <!-- AddFloatingActionButton -->
+      <!--AddFloatingActionButton-->
       <!--<com.getbase.floatingactionbutton.AddFloatingActionButton-->
       <!--android:id="@+id/fab"-->
       <!--android:layout_width="wrap_content"-->

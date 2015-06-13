@@ -218,6 +218,7 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   public void reset() {
     stop();
     resetProperties();
+    setupAnimations();
     start();
   }
 

@@ -16,5 +16,7 @@
     </attr>
     <attr name="roundedStroke"
         format="boolean"/>
+    <attr name="reusable"
+        format="boolean"/>
   </declare-styleable>
 </resources>
