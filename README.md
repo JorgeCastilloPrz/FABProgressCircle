@@ -66,6 +66,7 @@ To play the completion animation, you will need to call:
 fabProgressCircle.beginFinalAnimation();
 ```
 When the completion animation is displayed, the fab gets transformed to its final appearance, and **it becomes not clickable** anymore. This behavior is intentional.
+If you want your fab to get clickable again (to be able to repeat the process), check custom attribute `app:reusable="true"` in the custom attributes list.
 If something happens to the asynchronous task running (some kind of error), you can always stop the animation by doing:
 ```java
 fabProgressCircle.hide();
