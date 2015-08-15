@@ -224,4 +224,20 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
       return getResources().getDimensionPixelSize(R.dimen.fab_size_mini);
     }
   }
+
+  private void readdArcView() {
+    removeView(progressArc);
+    addArcView();
+  }
+
+  public void setArcColor(int arcColor) {
+    this.arcColor = arcColor;
+    readdArcView();
+  }
+
+  public void setArcWidth(int arcWidth) {
+    this.arcWidth = arcWidth;
+    readdArcView();
+  }
+
 }
