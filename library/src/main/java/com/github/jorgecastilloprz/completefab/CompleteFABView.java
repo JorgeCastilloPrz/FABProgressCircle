@@ -75,17 +75,10 @@ public class CompleteFABView extends FrameLayout {
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     if (!viewsAdded) {
-      setupContentSize();
       tintCompleteFabWithArcColor();
       setIcon();
       viewsAdded = true;
     }
-  }
-
-  private void setupContentSize() {
-    int contentSize = (int) getResources().getDimension(R.dimen.fab_content_size);
-    int mContentPadding = (getChildAt(0).getMeasuredWidth() - contentSize) / 2;
-    getChildAt(0).setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
   }
 
   public void animate(AnimatorSet progressArcAnimator) {
