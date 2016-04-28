@@ -210,7 +210,9 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
 
   public FABProgressCircle withArcColor(@ColorInt int arcColor) {
     this.arcColor = arcColor;
-    progressArc.setArcColor(arcColor);
+    if (progressArc != null) {
+        progressArc.setArcColor(arcColor);
+    }
     return this;
   }
 
