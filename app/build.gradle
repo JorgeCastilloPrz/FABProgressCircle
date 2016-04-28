@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-  compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
+  compile project(path: ':library')
   compile parent.ext.libAppCompat
   compile parent.ext.libSupportDesign
   compile parent.ext.libPicasso
