@@ -21,6 +21,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 
@@ -35,6 +36,7 @@ import static com.github.jorgecastilloprz.utils.AnimationUtils.SHOW_SCALE_ANIM_D
 public final class ProgressArcView extends ProgressBar {
 
   private ArcListener internalListener;
+  @ColorInt
   private int arcColor;
   private int arcWidth;
   private boolean roundedStroke;
@@ -47,7 +49,7 @@ public final class ProgressArcView extends ProgressBar {
     init(arcColor, arcWidth, roundedStroke);
   }
 
-  public void init(int arcColor, int arcWidth, boolean roundedStroke) {
+  public void init(@ColorInt int arcColor, int arcWidth, boolean roundedStroke) {
     setupInitialAlpha();
     ProgressArcDrawable arcDrawable = new ProgressArcDrawable(arcWidth, arcColor, roundedStroke);
     setIndeterminateDrawable(arcDrawable);
@@ -122,5 +124,10 @@ public final class ProgressArcView extends ProgressBar {
     });
 
     return set;
+  }
+
+  public void setArcColor(@ColorInt int arcColor) {
+    this.arcColor = arcColor;
+    getDrawable().setArcColor(arcColor);
   }
 }

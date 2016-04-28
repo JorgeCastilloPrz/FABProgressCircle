@@ -25,6 +25,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.view.animation.DecelerateInterpolator;
 import com.github.jorgecastilloprz.progressarc.animations.ArcAnimationFactory;
 
@@ -57,6 +58,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
   private Paint paint;
 
   private float strokeWidth;
+
+  @ColorInt
   private int arcColor;
   private int minSweepAngle;
   private int maxSweepAngle;
@@ -304,5 +307,10 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
 
   @Override public int getOpacity() {
     return PixelFormat.RGB_565;
+  }
+
+  public void setArcColor(@ColorInt int arcColor) {
+    this.arcColor = arcColor;
+    paint.setColor(arcColor);
   }
 }

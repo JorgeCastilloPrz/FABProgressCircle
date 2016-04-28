@@ -44,6 +44,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
   private final int SIZE_NORMAL = 1;
   private final int SIZE_MINI = 2;
 
+  @ColorInt
   private int arcColor;
   private int arcWidth;
   private int circleSize;
@@ -209,6 +210,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
 
   public FABProgressCircle withArcColor(@ColorInt int arcColor) {
     this.arcColor = arcColor;
+    progressArc.setArcColor(arcColor);
     return this;
   }
 
