@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
   private final int SIZE_NORMAL = 1;
   private final int SIZE_MINI = 2;
 
+  @ColorInt
   private int arcColor;
   private int arcWidth;
   private int circleSize;
@@ -204,6 +206,14 @@ public class FABProgressCircle extends FrameLayout implements ArcListener, Compl
     if (listener != null) {
       listener.onFABProgressAnimationEnd();
     }
+  }
+
+  public FABProgressCircle withArcColor(@ColorInt int arcColor) {
+    this.arcColor = arcColor;
+    if (progressArc != null) {
+        progressArc.setArcColor(arcColor);
+    }
+    return this;
   }
 
   private void doReusableReset() {
