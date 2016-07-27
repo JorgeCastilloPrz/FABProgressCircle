@@ -38,6 +38,12 @@ public final class ProgressArcView extends ProgressBar {
   private int arcColor;
   private int arcWidth;
   private boolean roundedStroke;
+  private Runnable animationRunnable = new Runnable() {
+    public void run() {
+      ProgressArcView.this.setAlpha(1.0F);
+      ProgressArcView.this.getDrawable().reset();
+    }
+  };
 
   public ProgressArcView(Context context, int arcColor, int arcWidth, boolean roundedStroke) {
     super(context);
@@ -62,15 +68,11 @@ public final class ProgressArcView extends ProgressBar {
   }
 
   public void show() {
-    postDelayed(new Runnable() {
-      @Override public void run() {
-        setAlpha(1);
-        getDrawable().reset();
-      }
-    }, SHOW_SCALE_ANIM_DELAY);
+    postDelayed(animationRunnable, SHOW_SCALE_ANIM_DELAY);
   }
 
   public void stop() {
+    removeCallbacks(animationRunnable);
     getDrawable().stop();
     ValueAnimator fadeOutAnim = ObjectAnimator.ofFloat(this, "alpha", 1, 0);
     fadeOutAnim.setDuration(100).start();
