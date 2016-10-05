@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.utils;
+package com.github.jorgecastilloprz;
 
 import android.animation.ValueAnimator;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class AnimationUtils {
+interface ArcAnimation {
 
-  public static final int SHOW_SCALE_ANIM_DELAY = 150;
-
-  public static float getAnimatedFraction(ValueAnimator animator) {
-    float fraction = ((float) animator.getCurrentPlayTime()) / animator.getDuration();
-    fraction = Math.min(fraction, 1f);
-    fraction = animator.getInterpolator().getInterpolation(fraction);
-    return fraction;
-  }
+    ValueAnimator getAnimator();
 }

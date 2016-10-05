@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.progressarc.animations;
+package com.github.jorgecastilloprz;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -22,22 +22,23 @@ import android.view.animation.DecelerateInterpolator;
 /**
  * @author Jorge Castillo Pérez
  */
-public class ShrinkArcAnimation implements ArcAnimation {
+class ShrinkArcAnimation implements ArcAnimation {
 
-  private ValueAnimator shrinkAnim;
+    private ValueAnimator shrinkAnim;
 
-  ShrinkArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener,
-      Animator.AnimatorListener listener) {
+    ShrinkArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener,
+                       Animator.AnimatorListener listener, int duration) {
 
-    shrinkAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE,
-        ArcAnimationFactory.MINIMUM_SWEEP_ANGLE);
-    shrinkAnim.setInterpolator(new DecelerateInterpolator());
-    shrinkAnim.setDuration(ArcAnimationFactory.SWEEP_ANIM_DURATION);
-    shrinkAnim.addUpdateListener(updateListener);
-    shrinkAnim.addListener(listener);
-  }
+        shrinkAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE,
+                ArcAnimationFactory.MINIMUM_SWEEP_ANGLE);
+        shrinkAnim.setInterpolator(new DecelerateInterpolator());
+        shrinkAnim.setDuration(duration);
+        shrinkAnim.addUpdateListener(updateListener);
+        shrinkAnim.addListener(listener);
+    }
 
-  @Override public ValueAnimator getAnimator() {
-    return shrinkAnim;
-  }
+    @Override
+    public ValueAnimator getAnimator() {
+        return shrinkAnim;
+    }
 }

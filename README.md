@@ -100,6 +100,13 @@ But if you are working with a mini sized FAB, you will need to use it.
 * `app:roundedStroke="true"`: Use this one to have a rounded stroke on both progress circle heads. You will not really notice the difference for the default
 `arcStrokeWidth`, but you will if you are using a higher width to get some cool effects.
 
+* `app:completeArcDuration="2000"`: Set the animation duration in millisecond when progress is complete. Default value is 2000 ms
+* `app:rotationArcDuration="2000"`: Set the animation duration in millisecond for rotation progression. Default value is 2000 ms
+* `app:growArcDuration="1000"`: Set the animation duration in millisecond for progress to appear. Default value is 1000 ms
+* `app:shrinkArcDuration="1000"`: Set the animation duration in millisecond for progress to disappear. Default value is 1000 ms
+* `app:finalIconDuration="3000"`: Set the animation duration in millisecond for final icon to disappear. Default value is 3000 ms
+* `app:showFinalIcon="true|false"`: Set if final icon should be visible. Default is true;
+
 Of course, anyone of the custom attrs can be used with resource references (`@dimen`, `@color`, `@integer` ...) or just literal values.
 Dont forget to add the namespace declaration to your xml file. You can change the namespace name from `app` to anything you want.
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.progressarc.animations;
+package com.github.jorgecastilloprz;
 
 import android.animation.ValueAnimator;
 import android.view.animation.LinearInterpolator;
@@ -23,18 +23,19 @@ import android.view.animation.LinearInterpolator;
  */
 final class RotateArcAnimation implements ArcAnimation {
 
-  private ValueAnimator rotateAnim;
+    private ValueAnimator rotateAnim;
 
-  RotateArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener) {
-    rotateAnim = ValueAnimator.ofFloat(0f, 360f);
-    rotateAnim.setInterpolator(new LinearInterpolator());
-    rotateAnim.setDuration(ArcAnimationFactory.ROTATE_ANIMATOR_DURATION);
-    rotateAnim.addUpdateListener(updateListener);
-    rotateAnim.setRepeatCount(ValueAnimator.INFINITE);
-    rotateAnim.setRepeatMode(ValueAnimator.RESTART);
-  }
+    RotateArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener, int duration) {
+        rotateAnim = ValueAnimator.ofFloat(0f, 360f);
+        rotateAnim.setInterpolator(new LinearInterpolator());
+        rotateAnim.setDuration(duration);
+        rotateAnim.addUpdateListener(updateListener);
+        rotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+        rotateAnim.setRepeatMode(ValueAnimator.RESTART);
+    }
 
-  @Override public ValueAnimator getAnimator() {
-    return rotateAnim;
-  }
+    @Override
+    public ValueAnimator getAnimator() {
+        return rotateAnim;
+    }
 }

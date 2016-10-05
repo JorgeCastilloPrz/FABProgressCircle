@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.progressarc;
+package com.github.jorgecastilloprz;
+
+import android.view.View;
 
 /**
- * Just for internal callbacks not interesting for the client code
- *
  * @author Jorge Castillo Pérez
  */
-public interface ArcListener {
+class LibraryUtils {
 
-  void onArcAnimationComplete();
+    public static boolean isAFutureSimpleFAB(View view) {
+        return view.getClass().getCanonicalName().startsWith("com.getbase");
+    }
 }

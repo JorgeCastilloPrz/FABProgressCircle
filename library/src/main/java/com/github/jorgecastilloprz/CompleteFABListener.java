@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.completefab;
+package com.github.jorgecastilloprz;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public interface CompleteFABListener {
+interface CompleteFABListener {
 
   void onCompleteFABAnimationEnd();
 }
