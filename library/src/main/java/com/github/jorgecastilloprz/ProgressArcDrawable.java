@@ -107,8 +107,8 @@ final class ProgressArcDrawable extends Drawable implements Animatable {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float animatedFraction = getAnimatedFraction(animation);
-                        float angle = minSweepAngle + animatedFraction *
-                                (maxSweepAngle - minSweepAngle);
+                        float angle = minSweepAngle + animatedFraction
+                                * (maxSweepAngle - minSweepAngle);
                         updateCurrentSweepAngle(angle);
                     }
                 }, new Animator.AnimatorListener() {

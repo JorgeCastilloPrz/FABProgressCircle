@@ -173,10 +173,10 @@ abstract class AbstractFABProgressCircle extends FrameLayout implements ArcListe
      *                   or {@link CircleSizeType#CIRCLE_MINI}
      */
     public void setCircleSize(@CircleSizeDef int circleSize) {
-        if (circleSize > CircleSizeType.CIRCLE_MINI ||
-                circleSize < CircleSizeType.CIRCLE_NORMAL) {
-            throw new IllegalArgumentException("Invalid CircleSize. Must be " +
-                    "CircleSizeType.CIRCLE_MINI or CircleSizeType.CIRCLE_NORMAL");
+        if (circleSize > CircleSizeType.CIRCLE_MINI
+                || circleSize < CircleSizeType.CIRCLE_NORMAL) {
+            throw new IllegalArgumentException("Invalid CircleSize. Must be "
+                    + "CircleSizeType.CIRCLE_MINI or CircleSizeType.CIRCLE_NORMAL");
         }
         mCircleSize = circleSize;
         invalidate();
