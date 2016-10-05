@@ -1,142 +1,102 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical"
-    android:clipChildren="false"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:clipChildren="false"
+              android:orientation="vertical"
+              tools:context=".MainActivity"
     >
 
-  <ImageView
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="4"
-      android:src="@drawable/thailandrailaybeach"
-      android:scaleType="centerCrop"
-      />
-
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="1"
-      android:background="@color/primary"
-      android:paddingLeft="@dimen/photo_description_side_padding"
-      android:paddingRight="@dimen/photo_description_side_padding"
-      android:clipChildren="false"
-      android:clipToPadding="false"
-      >
-
-    <com.github.jorgecastilloprz.FABProgressCircle
-        android:id="@+id/fabProgressCircle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:layout_marginTop="@dimen/fab_top_margin"
-        >
-
-      <!--Google FAB-->
-      <android.support.design.widget.FloatingActionButton
-          android:id="@+id/fab"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@drawable/ic_upload"
-          app:rippleColor="@color/fab_ripple"
-          app:elevation="@dimen/fab_elevation"
-          app:borderWidth="0dp"
-          />
-
-      <!-- Another FAB well known libraries. Uncomment any one of the fabs to test it if you want.
-       You will need to update MainActivity references and castings to match the new lib. -->
-
-      <!-- Makovkastar (melkynov) FAB -->
-
-      <!--<com.melnykov.fab.FloatingActionButton-->
-      <!--android:id="@+id/fab"-->
-      <!--android:layout_width="wrap_content"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--android:src="@drawable/ic_upload"-->
-      <!--app:fab_colorNormal="@color/fab_primary"-->
-      <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
-      <!--app:fab_colorRipple="@color/fab_ripple"-->
-      <!--app:fab_type="mini"-->
-      <!--/>-->
-
-      <!-- Futuresimple FABs -->
-
-      <!-- Basic one -->
-
-      <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
-      <!--android:id="@+id/fab"-->
-      <!--android:layout_width="wrap_content"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--app:fab_icon="@drawable/ic_upload"-->
-      <!--app:fab_colorNormal="@color/fab_primary"-->
-      <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
-      <!--/>-->
-
-      <!--AddFloatingActionButton-->
-      <!--<com.getbase.floatingactionbutton.AddFloatingActionButton-->
-      <!--android:id="@+id/fab"-->
-      <!--android:layout_width="wrap_content"-->
-      <!--android:layout_height="wrap_content"-->
-      <!--app:fab_plusIconColor="#ffffff"-->
-      <!--app:fab_colorNormal="@color/fab_primary"-->
-      <!--app:fab_colorPressed="@color/fab_primary_pressed"-->
-      <!--/>-->
-
-    </com.github.jorgecastilloprz.FABProgressCircle>
-
     <ImageView
-        android:id="@+id/avatar"
-        android:layout_width="@dimen/avatarSize"
-        android:layout_height="@dimen/avatarSize"
-        android:src="@drawable/avatar"
-        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:scaleType="centerCrop"
+        android:src="@drawable/thailandrailaybeach"
         />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_toEndOf="@id/avatar"
-        android:layout_toRightOf="@id/avatar"
-        android:layout_alignTop="@id/avatar"
-        android:paddingLeft="@dimen/photo_text_left_padding"
-        android:layout_centerVertical="true"
-        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/primary"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingLeft="@dimen/photo_description_side_padding"
+        android:paddingRight="@dimen/photo_description_side_padding">
 
-      <com.github.jorgecastilloprz.fabprogresscircle.components.RobotoTextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/railay_beach"
-          android:textColor="@android:color/white"
-          android:textStyle="bold"
-          android:textSize="@dimen/photo_desc_title"
-          />
+        <com.github.jorgecastilloprz.FABProgressCircle
+            android:id="@+id/fabProgressCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_top_margin"
+            app:arcWidth="2dp"
+            app:completeArcDuration="500"
+            app:reusable="true">
 
-      <com.github.jorgecastilloprz.fabprogresscircle.components.RobotoTextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="5dp"
-          android:text="@string/photo_attribution"
-          android:textColor="@android:color/white"
-          android:textStyle="bold"
-          android:textSize="@dimen/photo_desc_author"
-          />
-    </LinearLayout>
+            <!--Google FAB-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_upload"
+                app:elevation="@dimen/fab_elevation"
+                app:rippleColor="@color/fab_ripple"/>
 
-    <ImageView
-        android:id="@+id/overflowIcon"
-        android:layout_width="@dimen/overflow_icon_size"
-        android:layout_height="@dimen/overflow_icon_size"
-        android:src="@drawable/ic_action_navigation_more_vert"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        />
+        </com.github.jorgecastilloprz.FABProgressCircle>
 
-  </RelativeLayout>
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/avatarSize"
+            android:layout_height="@dimen/avatarSize"
+            android:layout_centerVertical="true"
+            android:src="@drawable/avatar"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/avatar"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/avatar"
+            android:layout_toRightOf="@id/avatar"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/photo_text_left_padding"
+            >
+
+            <com.github.jorgecastilloprz.fabprogresscircle.components.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/railay_beach"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/photo_desc_title"
+                android:textStyle="bold"
+                />
+
+            <com.github.jorgecastilloprz.fabprogresscircle.components.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/photo_attribution"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/photo_desc_author"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/overflowIcon"
+            android:layout_width="@dimen/overflow_icon_size"
+            android:layout_height="@dimen/overflow_icon_size"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_action_navigation_more_vert"
+            />
+
+    </RelativeLayout>
 
 </LinearLayout>

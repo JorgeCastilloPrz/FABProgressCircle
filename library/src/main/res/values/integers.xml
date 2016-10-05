@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="default_cycle_duration">2000</integer>
+    <integer name="default_final_icon_show_duration">3000</integer>
+
+    <integer name="default_arc_rotation_duration">2000</integer>
+    <integer name="default_arc_complete_duration">2000</integer>
+    <integer name="default_arc_shrink_duration">1000</integer>
+    <integer name="default_arc_grow_duration">1000</integer>
+
+    <integer name="duration_fade_out_progress_arc_view">100</integer>
+    <integer name="duration_scale_down_progress_arc_view">150</integer>
+</resources>

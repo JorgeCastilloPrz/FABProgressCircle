@@ -13,16 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.utils;
-
-import android.view.View;
+package com.github.jorgecastilloprz;
 
 /**
  * @author Jorge Castillo Pérez
  */
-public class LibraryUtils {
+public interface FABProgressListener {
 
-  public static boolean isAFutureSimpleFAB(View view) {
-    return view.getClass().getCanonicalName().startsWith("com.getbase");
-  }
+    void onFABProgressAnimationEnd();
 }

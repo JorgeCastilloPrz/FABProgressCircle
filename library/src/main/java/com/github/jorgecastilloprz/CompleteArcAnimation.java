@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.jorgecastilloprz.progressarc.animations;
+package com.github.jorgecastilloprz;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -22,22 +22,23 @@ import android.view.animation.DecelerateInterpolator;
 /**
  * @author Jorge Castillo Pérez
  */
-public class CompleteArcAnimation implements ArcAnimation {
+class CompleteArcAnimation implements ArcAnimation {
 
-  private ValueAnimator completeAnim;
+    private ValueAnimator completeAnim;
 
-  CompleteArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener,
-      Animator.AnimatorListener listener) {
+    CompleteArcAnimation(ValueAnimator.AnimatorUpdateListener updateListener,
+                         Animator.AnimatorListener listener, int duration) {
 
-    completeAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE,
-        ArcAnimationFactory.MINIMUM_SWEEP_ANGLE);
-    completeAnim.setInterpolator(new DecelerateInterpolator());
-    completeAnim.setDuration(ArcAnimationFactory.COMPLETE_ANIM_DURATION);
-    completeAnim.addUpdateListener(updateListener);
-    completeAnim.addListener(listener);
-  }
+        completeAnim = ValueAnimator.ofFloat(ArcAnimationFactory.MAXIMUM_SWEEP_ANGLE,
+                ArcAnimationFactory.MINIMUM_SWEEP_ANGLE);
+        completeAnim.setInterpolator(new DecelerateInterpolator());
+        completeAnim.setDuration(duration);
+        completeAnim.addUpdateListener(updateListener);
+        completeAnim.addListener(listener);
+    }
 
-  @Override public ValueAnimator getAnimator() {
-    return completeAnim;
-  }
+    @Override
+    public ValueAnimator getAnimator() {
+        return completeAnim;
+    }
 }

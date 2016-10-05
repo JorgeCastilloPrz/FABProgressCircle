@@ -6,6 +6,5 @@
   <dimen name="fab_size_normal">56dp</dimen>
   <dimen name="fab_size_mini">40dp</dimen>
   <dimen name="fab_translation_z_pressed">6dp</dimen>
-  <integer name="default_cycle_duration">2000</integer>
   <dimen name="futuresimple_fab_shadow_offset">3dp</dimen>
 </resources>
