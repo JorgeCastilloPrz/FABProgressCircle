@@ -156,7 +156,7 @@ Add it to your project
 If you are working with gradle, add the dependency to your `build.gradle` file:
 ```groovy
 dependencies{
-    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
+    implementation 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
 }
 ```
 if you are working with maven, do it into your `pom.xml`
